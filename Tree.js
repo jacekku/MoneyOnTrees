@@ -1,0 +1,19 @@
+class Tree{
+    constructor(spot,type,growthStage=0){
+        this.spot=spot
+        this.type=type
+        this.growthStage=growthStage||0
+        this.growthCounter=0
+        this.growthThreshold=20
+    }
+    show(){
+        image(treeSheet,this.spot.x,this.spot.y,STYLE.treeSpotSize,STYLE.treeSpotSize,this.growthStage*100,0,100,100)
+    }
+    tick(){
+        this.growthCounter++
+        if(this.growthCounter>this.growthThreshold){
+            this.growthStage+=this.growthStage<5?1:0
+            this.growthCounter=0
+        }
+    }
+}

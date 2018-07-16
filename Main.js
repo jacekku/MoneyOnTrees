@@ -6,6 +6,8 @@ const STYLE = {
     textSize: 30,
     margin: 10,
     buttonSize: 50,
+    buttonX: 10,
+    buttonY: 620,
     treeSpotSize: undefined,
     orchard: {
         x: 10,
@@ -26,17 +28,27 @@ const STYLE = {
     itemHeightInInventory: 50
 }
 let mouseObject
-let orchard, inventory, button, money, saplings
+let orchard, inventory, button, money, saplings, shop, shopButton
 let treeSheet, coinImage, saplingImage
+let shopOpen
 
 function preload() {
     treeSheet = loadImage('assets/TreeSheet.png')
     saplingImage = loadImage('assets/TreeIcon.png')
     coinImage = loadImage('assets/coin.png')
-    Actions={
-        NOTHING:{id:0,image:null},
-        SELL:{id:1,image:coinImage},
-        PLANT:{id:2,image:saplingImage}
+    Actions = {
+        NOTHING: {
+            id: 0,
+            image: null
+        },
+        SELL: {
+            id: 1,
+            image: coinImage
+        },
+        PLANT: {
+            id: 2,
+            image: saplingImage
+        }
     }
 }
 var Actions
@@ -44,9 +56,9 @@ var Actions
 
 function setup() {
     createCanvas(900, 700)
-    mouseObject=new Mouse()
-    money = new Item("Money", 0, coinImage,Actions.SELL)
-    saplings = new Item("Saplings", 20, saplingImage,Actions.PLANT)
+    mouseObject = new Mouse()
+    money = new Item("Money", 0, coinImage, Actions.SELL)
+    saplings = new Item("Saplings", 20, saplingImage, Actions.PLANT)
     textAlign(CENTER, CENTER)
     textSize(STYLE.textSize)
     noCursor()
@@ -56,34 +68,58 @@ function setup() {
     STYLE.inventory.width = width - 620 - 10
     orchard = new Orchard()
     inventory = new Inventory()
+    shop = new Shop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     inventory.items.push(money)
     inventory.items.push(saplings)
-    button = new Button(10, 620)
+
+
+
+    button = new Button(STYLE.buttonX, STYLE.buttonY)
     button.setImage(coinImage)
-    mouseObject.setAction(Actions.SELL)
+    button.setOnClick(function () {
+        mouseObject.setAction(Actions.SELL)
+    })
+    shopButton = new Button(STYLE.buttonX + STYLE.margin + STYLE.buttonSize, STYLE.buttonY)
+    shopButton.setImage(saplingImage)
+    shopButton.setOnClick(function () {
+        shopOpen = !shopOpen
+    })
+
 }
 
 function draw() {
     background(128)
-    orchard.show()
-
+    if (shopOpen) {
+        shop.show()
+    } else {
+        orchard.show()
+        inventory.show()
+    }
     button.show()
-    inventory.show()
+    shopButton.show()
     if (running && oldTickTime < Date.now()) {
         orchard.tick()
         inventory.tick()
         oldTickTime = Date.now() + newTickEveryMS;
+
     }
 
-    if(mouseObject.action&&mouseObject.action.image){
-        image(mouseObject.action.image,mouseX,mouseY,40,40)
-        rect(mouseX,mouseY,5,5)
-    }else{
-    rect(mouseX, mouseY, 10, 20)}
+    if (mouseObject.action && mouseObject.action.image) {
+        image(mouseObject.action.image, mouseX, mouseY, 40, 40)
+        rect(mouseX, mouseY, 2, 10)
+        rect(mouseX, mouseY, 10, 2)
+    } else {
+        rect(mouseX, mouseY, 10, 20)
+    }
 }
 
 function mouseClicked() {
     orchard.isClicked()
     inventory.isClicked()
     button.isClicked()
+    shopButton.isClicked()
+}
+
+document.onvisibilitychange = function () {
+
 }

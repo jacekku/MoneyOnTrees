@@ -21,10 +21,37 @@ class Inventory{
         }
         pop()
     }
-    onClick(){}
+    tick(){
+        this.updateItems()
+    }
+
+
+
+    onClick(){
+        this.updateItemsButtons()
+        for(const item of this.items){
+            item.isClicked()
+        }
+    }
     isClicked(){
         if(this.button.isClicked())this.onClick()
     }
+    updateItemsButtons(){
+        let bound=STYLE.inventory
+        let itemHeight= STYLE.itemHeightInInventory
+        let index=0
+        for(const item of this.items){
+            item.setButton(new Button(bound.x,40+bound.y+(index*itemHeight),bound.width,itemHeight))
+            index++
+        }
+    }
+    updateItems(){
+        for(const item of this.items){
+            
+        }
+        
+    }
+
 }
 
 

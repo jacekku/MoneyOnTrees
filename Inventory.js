@@ -7,17 +7,20 @@ class Inventory {
         fill(255)
         let bound = STYLE.inventory
         rect(bound.x, bound.y, bound.width, bound.height)
-        rect(620, 50, width - 620 - 10, 600 - 40)
+        rect(bound.x, bound.y + textSize() + 1, bound.width, bound.height - textSize())
         fill(0)
-        text("INVENTORY", 620 + ((width - 620 - 10) / 2), textSize())
+        text("INVENTORY", bound.x + bound.width / 2, textSize())
+
 
         push()
-        translate(620, 50)
+        translate(620, bound.y + textSize())
         textSize(20)
         textAlign(LEFT)
         for (const item of this.items) {
-            item.showInInventory()
-            translate(0, STYLE.itemHeightInInventory)
+            if (item.amount > 0) {
+                item.showInInventory()
+                translate(0, STYLE.itemHeightInInventory)
+            }
         }
         pop()
     }
@@ -41,15 +44,17 @@ class Inventory {
         let itemHeight = STYLE.itemHeightInInventory
         let index = 0
         for (const item of this.items) {
-            item.setButton(new Button(bound.x, 40 + bound.y + (index * itemHeight), bound.width, itemHeight))
-            index++
+            if (item.amount > 0) {
+                item.setButton(new Button(bound.x, bound.y + textSize() + (index * itemHeight), bound.width, itemHeight))
+                index++
+            }
         }
     }
     updateItems() {
         for (const item of this.items) {
-            if (item.amount == 0) {
-                this.items.splice(this.items.indexOf(item), 1)
-            }
+            //    if (item.amount == 0) {
+            //     this.items.splice(this.items.indexOf(item), 1)
+            //    }
         }
 
     }

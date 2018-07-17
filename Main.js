@@ -30,8 +30,8 @@ const STYLE = {
 let mouseObject
 let orchard, inventory, button, money, saplings, shop, shopButton
 let treeSheet, coinImage, saplingImage
-let shopOpen
-
+let shopOpen=true
+let Actions
 function preload() {
     treeSheet = loadImage('assets/TreeSheet.png')
     saplingImage = loadImage('assets/TreeIcon.png')
@@ -51,20 +51,21 @@ function preload() {
         }
     }
 }
-var Actions
+
 
 
 function setup() {
     createCanvas(900, 700)
     mouseObject = new Mouse()
     money = new Item("Money", 0, coinImage, Actions.SELL)
-    saplings = new Item("Saplings", 20, saplingImage, Actions.PLANT)
+    saplings = new Item("Saplings", 10, saplingImage, Actions.PLANT)
     textAlign(CENTER, CENTER)
     textSize(STYLE.textSize)
     noCursor()
     STYLE.buttonSize = height - (STYLE.orchard.height + 3 * STYLE.margin)
-    STYLE.treeSpotSize = (STYLE.orchard.height / 3) - (3 * STYLE.margin)
     STYLE.orchard.viewY += STYLE.textSize + STYLE.margin
+    STYLE.treeSpotSize = (STYLE.orchard.height-textSize()-(STYLE.margin*4))/3
+    //(STYLE.orchard.height / 3) - (3 * STYLE.margin)
     STYLE.inventory.width = width - 620 - 10
     orchard = new Orchard()
     inventory = new Inventory()
@@ -103,19 +104,21 @@ function draw() {
         oldTickTime = Date.now() + newTickEveryMS;
 
     }
-
+    fill(0)
     if (mouseObject.action && mouseObject.action.image) {
         image(mouseObject.action.image, mouseX, mouseY, 40, 40)
-        rect(mouseX, mouseY, 2, 10)
-        rect(mouseX, mouseY, 10, 2)
-    } else {
-        rect(mouseX, mouseY, 10, 20)
     }
+    rect(mouseX, mouseY, 2, 10)
+    rect(mouseX, mouseY, 10, 2)
 }
 
 function mouseClicked() {
-    orchard.isClicked()
-    inventory.isClicked()
+    if (shopOpen) {
+        // shop.isClicked()
+    } else {
+        orchard.isClicked()
+        inventory.isClicked()
+    }
     button.isClicked()
     shopButton.isClicked()
 }

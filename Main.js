@@ -29,13 +29,14 @@ const STYLE = {
 }
 let mouseObject
 let orchard, inventory, button, money, saplings, shop, shopButton
-let treeSheet, coinImage, saplingImage
+let treeSheet, coinImage, saplingImage, shopImage
 let shopOpen=false
 let Actions
 function preload() {
     treeSheet = loadImage('assets/TreeSheet.png')
     saplingImage = loadImage('assets/TreeIcon.png')
     coinImage = loadImage('assets/coin.png')
+    shopImage = loadImage('assets/shopIcon.png')
     Actions = {
         NOTHING: {
             id: 0,
@@ -81,7 +82,7 @@ function setup() {
         mouseObject.setAction(Actions.SELL)
     })
     shopButton = new Button(STYLE.buttonX + STYLE.margin + STYLE.buttonSize, STYLE.buttonY)
-    shopButton.setImage(saplingImage)
+    shopButton.setImage(shopImage)
     shopButton.setOnClick(function () {
         shopOpen = !shopOpen
     })

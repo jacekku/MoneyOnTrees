@@ -17,7 +17,7 @@ class Inventory {
         textSize(20)
         textAlign(LEFT)
         for (const item of this.items) {
-            if (item.amount > 0) {
+            if (item.name=="Money"||item.amount > 0) {
                 item.showInInventory()
                 translate(0, STYLE.itemHeightInInventory)
             }
@@ -44,7 +44,7 @@ class Inventory {
         let itemHeight = STYLE.itemHeightInInventory
         let index = 0
         for (const item of this.items) {
-            if (item.amount > 0) {
+            if (item.name=="Money"||item.amount > 0) {
                 item.setButton(new Button(bound.x, bound.y + textSize() + (index * itemHeight), bound.width, itemHeight))
                 index++
             }
@@ -57,6 +57,11 @@ class Inventory {
             //    }
         }
 
+    }
+    getItemByName(name){
+        for (const item of this.items) {
+            if(item.name==name)return item
+        }
     }
 
 }

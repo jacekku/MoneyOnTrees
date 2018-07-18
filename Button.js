@@ -13,10 +13,11 @@ class Button{
     setImage(image){
         this.image=image
     }
-    show(){
-        fill(255)
+    show(newFill=255){
+        fill(newFill)
         rect(this.x,this.y,this.w,this.h)
-        image(this.image,this.x,this.y,this.w,this.h)
+        if(this.image)image(this.image,this.x,this.y,this.w,this.h)
+        return {x:this.x,y:this.y}
     }
     mouseIsInside(){
         return(mouseInsideRect(this.x,this.y,this.w,this.h))

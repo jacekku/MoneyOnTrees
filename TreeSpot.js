@@ -34,11 +34,11 @@ class TreeSpot {
 
     }
     plantTree() {
-        this.tree = new Tree(this, "oak")
+        this.tree = new Tree(this, "oak",20)
         saplings.subtractAmount(1)
     }
     sellTree() {
-        money.addAmount(10)
+        money.addAmount(this.tree.sellPrice)
         this.tree = null
     }
 }

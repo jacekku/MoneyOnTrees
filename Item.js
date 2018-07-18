@@ -1,42 +1,89 @@
 class Item {
-    constructor(name, amount, image,action, buyPrice,sellPrice) {
+    constructor(name, amount, image, action, buyPrice, sellPrice) {
         this.name = name || "unnamed item"
         this.amount = amount
         this.image = image
         this.button
         this.buyButton
         this.sellButton
-        this.sellPrice=sellPrice||0
-        this.buyPrice=buyPrice||0
+        this.sellPrice = sellPrice || 0
+        this.buyPrice = buyPrice || 0
         this.id
         this.action = action
     }
     addAmount(amount) {
         this.amount += amount
+        return true
     }
     subtractAmount(amount) {
-        if(this.amount==1){
+        if (this.amount-amount == 0) {
             this.addAmount(-amount)
-            if(mouseObject.action==this.action)mouseObject.setAction(Actions.NOTHING)
+            if (mouseObject.action == this.action) mouseObject.setAction(Actions.NOTHING)
+            return false
         }
-        if(this.amount<=0)return false
-        
-        this.addAmount(-amount)
+        if (this.amount-amount < 0) return false
+
+        return this.addAmount(-amount)
     }
     setAmount(amount) {
         this.amount = amount
     }
-    setButton(button) {
-        this.button = button
+    setButton(button, buttonID = "main") {
+        switch (buttonID) {
+            case "main":
+                this.button = button
+                break;
+            case "sell":
+                this.sellButton = button
+                break
+            case "buy":
+                this.buyButton = button
+                break
+            default:
+                break;
+        }
     }
-    onClick() {
-        mouseObject.setAction(this.action)
+    buyItem(amount=1){
+        let item=inventory.getItemByName(this.name)||console.log("not in inventory FIXIT !!!")
+        if(!item)return
+        if(money.subtractAmount(this.buyPrice*amount))
+        item.addAmount(amount)
+    }
+    sellItem(amount=1){
+        let item=inventory.getItemByName(this.name)||console.log("not in inventory FIXIT !!!")
+        if(!item)return
+        if(item.subtractAmount(amount))
+            money.addAmount(this.sellPrice*amount)
+    }
+
+
+
+    onClick(buttonID=0) {
+        //button
+        if(buttonID==0){mouseObject.setAction(this.action)}
+        //buy
+        else if(buttonID==1){
+            this.buyItem()
+        }
+        //sell
+        else if(buttonID==2){
+            this.sellItem()
+        }
     }
     isClicked() {
         if (this.button && this.button.isClicked()) {
-            this.onClick()
+            this.onClick(0)
             return true
-        } else return false
+        }
+
+        if (this.buyButton && this.buyButton.isClicked()) {
+            this.onClick(1)
+
+        }
+        if (this.sellButton && this.sellButton.isClicked()) {
+            this.onClick(2)
+        }
+         else return false
     }
 
     showInInventory() {
@@ -48,30 +95,41 @@ class Item {
         text(this.amount, STYLE.itemHeightInInventory + 1, 2 * textSize())
         if (image) this.showImage()
     }
-    showImage(x=0,y=0,w=STYLE.itemHeightInInventory,h=w) {
+    showImage(x = 0, y = 0, w = STYLE.itemHeightInInventory, h = w) {
         image(this.image, x, y, w + 1, h + 1)
     }
-    showInShop(buyPrice,sellPrice,available=0,isAvailable=true){
-        let itemSize=STYLE.itemHeightInInventory
-        let spotSize=STYLE.treeSpotSize
-        let middleX=(spotSize/2)
+    showInShop(x, y) {
         fill(255)
-        rect(0,0,spotSize,spotSize)
-        this.showImage(middleX-itemSize/2)
-        line(0,itemSize,spotSize,itemSize)
-        itemSize+=textSize()
-        line(0,itemSize,spotSize,itemSize)
-        fill(200*!isAvailable,255,200*!isAvailable)
-        rect(0,itemSize,spotSize/2,spotSize-itemSize)
-        fill(255,0,0)
-        rect(spotSize/2,itemSize,spotSize/2,spotSize-itemSize)
-        fill(0)
-        text("$"+buyPrice,middleX-middleX/2,itemSize+textSize())
-        text(""+available,middleX-middleX/2,itemSize+textSize()*2)
-        text("$"+sellPrice,middleX+middleX/2,itemSize+textSize())
-        text(this.name,middleX,STYLE.itemHeightInInventory+textSize()/2)
+        let spotSize = STYLE.treeSpotSize
+        let itemSize = STYLE.itemHeightInInventory
+        rect(x, y, spotSize, spotSize)
         
+        image(this.image, x + spotSize / 2, y + itemSize / 2, itemSize, itemSize)
+
+        let pos=this.buyButton.show(color(0,255,0))
+        pos.x=pos.x+spotSize/4
+        pos.y=pos.y+textSize()
+        fill(0)
+        text("$"+this.buyPrice,pos.x,pos.y)
+       // text(this.amount,pos.x,pos.y+textSize())
+
+
+        pos=this.sellButton.show(color(255,0,0))
+        pos.x=pos.x+spotSize/4
+        pos.y=pos.y+textSize()
+        fill(0)
+        text("$"+this.sellPrice,pos.x,pos.y)
+        let getItem=inventory.getItemByName(this.name)||{amount:0}
+        text(getItem.amount,pos.x,pos.y+textSize())
+
+        text(this.name, x + spotSize / 2, y + itemSize + textSize() / 2)
+
     }
-
-
+    setShopButtons(x, y) {
+        let itemSize = STYLE.itemHeightInInventory + textSize()
+        let spotSize = STYLE.treeSpotSize
+        let middleX = (spotSize / 2)
+        this.setButton(new Button(x, y + itemSize, spotSize / 2, spotSize - itemSize), "buy")
+        this.setButton(new Button(x + middleX, y + itemSize, spotSize / 2, spotSize - itemSize), "sell")
+    }
 }

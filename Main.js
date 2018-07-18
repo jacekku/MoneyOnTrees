@@ -30,7 +30,7 @@ const STYLE = {
 let mouseObject
 let orchard, inventory, button, money, saplings, shop, shopButton
 let treeSheet, coinImage, saplingImage
-let shopOpen=true
+let shopOpen=false
 let Actions
 function preload() {
     treeSheet = loadImage('assets/TreeSheet.png')
@@ -57,8 +57,8 @@ function preload() {
 function setup() {
     createCanvas(900, 700)
     mouseObject = new Mouse()
-    money = new Item("Money", 0, coinImage, Actions.SELL)
-    saplings = new Item("Saplings", 10, saplingImage, Actions.PLANT)
+    money = new Item("Money", 10, coinImage, Actions.SELL)
+    saplings = new Item("Sapling", 5, saplingImage, Actions.PLANT)
     textAlign(CENTER, CENTER)
     textSize(STYLE.textSize)
     noCursor()
@@ -114,7 +114,7 @@ function draw() {
 
 function mouseClicked() {
     if (shopOpen) {
-        // shop.isClicked()
+        shop.isClicked()
     } else {
         orchard.isClicked()
         inventory.isClicked()

@@ -14,7 +14,6 @@ leftPageAt = Date.now()
 document.onvisibilitychange = function () {
     if (document.visibilityState == "hidden") {
         leftPageAt = Date.now()
-        
         saveGame()
     } else {
         let missedTicks = Math.floor((Date.now() - leftPageAt) / newTickEveryMS)

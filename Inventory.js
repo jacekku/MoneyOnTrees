@@ -4,11 +4,10 @@ class Inventory {
         this.items = []
     }
     show() {
-        fill(255)
         let bound = STYLE.inventory
-        rect(bound.x, bound.y, bound.width, bound.height)
-        rect(bound.x, bound.y + textSize() + 1, bound.width, bound.height - textSize())
-        fill(0)
+        image(images.plankBackgroundImage,bound.x, bound.y,bound.width,textSize())
+        image(images.woodFrame,bound.x, bound.y + textSize(), bound.width, bound.height - textSize())
+        fill(255,245,144)
         text("INVENTORY", bound.x + bound.width / 2, textSize())
 
 
@@ -44,9 +43,12 @@ class Inventory {
         let itemHeight = STYLE.itemHeightInInventory
         let index = 0
         for (const item of this.items) {
-            if (item.name=="Money"||item.amount > 0) {
+            if (item.name==="Money"||item.amount > 0) {
                 item.setButton(new Button(bound.x, bound.y + textSize() + (index * itemHeight), bound.width, itemHeight))
                 index++
+            }
+            else{
+                item.setButton(null)
             }
         }
     }

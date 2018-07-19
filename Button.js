@@ -16,7 +16,9 @@ class Button{
     show(newFill=255){
         fill(newFill)
         rect(this.x,this.y,this.w,this.h)
-        if(this.image)image(this.image,this.x,this.y,this.w,this.h)
+        if(this.image){
+            imageMode(CORNER)
+            image(this.image,this.x,this.y,this.w,this.h)}
         return {x:this.x,y:this.y}
     }
     mouseIsInside(){

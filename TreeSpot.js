@@ -7,16 +7,30 @@ class TreeSpot {
         this.button = new Button(this.x, this.y, STYLE.treeSpotSize, STYLE.treeSpotSize)
     }
     show() {
-        fill(0, 255, 255)
-        rect(this.x, this.y, STYLE.treeSpotSize, STYLE.treeSpotSize)
+        fill("#814f3e")
+        image(images.groundImage, this.x, this.y, STYLE.treeSpotSize, STYLE.treeSpotSize)
         if (this.tree) this.tree.show()
 
     }
     tick() {
         if (this.tree) this.tree.tick()
     }
-    getTree() {
-        return this.tree
+    getState() {
+        if (this.tree) return {
+            price: this.price,
+            tree: this.tree.getState()
+        }
+        else return {
+            price: this.price
+        }
+    }
+    setState(state) {
+        this.price = state.price
+        if (state.tree) {
+            let tree=state.tree
+            if (this.tree) this.tree.setState(tree)
+            else this.tree = new Tree(this, tree.type, tree.growthStage, tree.growthCounter, tree.growthThreshhold)
+        }
     }
 
     isClicked() {
@@ -26,19 +40,19 @@ class TreeSpot {
     }
 
     onClick() {
-        if (!this.tree && mouseObject.action == Actions.PLANT) {
+        if (!this.tree && mouseObject.action.id == Actions.PLANT.id) {
             this.plantTree()
-        } else if (this.tree.growthStage == 5 && mouseObject.action == Actions.SELL) {
+        } else if (this.tree.growthStage == 5 && mouseObject.action.id == Actions.HARVEST.id) {
             this.sellTree()
         }
 
     }
     plantTree() {
-        this.tree = new Tree(this, "oak",20)
-        saplings.subtractAmount(1)
+        this.tree = new Tree(this, "oak")
+        items.oak_saplings.subtractAmount(1)
     }
     sellTree() {
-        money.addAmount(this.tree.sellPrice)
+        items.oak_log.addAmount(1)
         this.tree = null
     }
 }

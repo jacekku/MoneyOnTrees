@@ -1,14 +1,13 @@
 class Tree{
-    constructor(spot,type,sellPrice,growthStage=0){
+    constructor(spot,type,growthStage=0,growthCounter=0,growthThreshold=20){
         this.spot=spot
         this.type=type
-        this.growthStage=growthStage||0
-        this.growthCounter=0
-        this.growthThreshold=20
-        this.sellPrice=sellPrice
+        this.growthStage=growthStage
+        this.growthCounter=growthCounter
+        this.growthThreshold=growthThreshold
     }
     show(){
-        image(treeSheet,this.spot.x,this.spot.y,STYLE.treeSpotSize,STYLE.treeSpotSize,this.growthStage*100,0,100,100)
+        image(images.treeSheet,this.spot.x,this.spot.y,STYLE.treeSpotSize,STYLE.treeSpotSize,this.growthStage*100,0,100,100)
     }
     tick(){
         this.growthCounter++
@@ -16,5 +15,19 @@ class Tree{
             this.growthStage+=this.growthStage<5?1:0
             this.growthCounter=0
         }
+    }
+    getState(){
+        return{
+            type:this.type,
+            growthStage:this.growthStage,
+            growthCounter:this.growthCounter,
+            growthThreshold:this.growthThreshold
+        }
+    }
+    setState(state){
+        this.type=state.type
+        this.growthStage=state.growthStage
+        this.growthCounter=state.growthCounter
+        this.growthThreshold=state.growthThreshold
     }
 }

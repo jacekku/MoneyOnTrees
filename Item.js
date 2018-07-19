@@ -17,9 +17,8 @@ class Item {
     }
     subtractAmount(amount) {
         if (this.amount-amount == 0) {
-            this.addAmount(-amount)
-            if (mouseObject.action == this.action) mouseObject.setAction(Actions.NOTHING)
-            return false
+            if(this.action && mouseObject.action.id == this.action.id) mouseObject.setAction(Actions.NOTHING)
+            return this.addAmount(-amount)
         }
         if (this.amount-amount < 0) return false
 
@@ -44,16 +43,18 @@ class Item {
         }
     }
     buyItem(amount=1){
+        if(this.buyPrice==0)return
         let item=inventory.getItemByName(this.name)||console.log("not in inventory FIXIT !!!")
         if(!item)return
-        if(money.subtractAmount(this.buyPrice*amount))
+        // TODO change this so the item object doesnt need to know about other items
+        if(items.money.subtractAmount(this.buyPrice*amount))
         item.addAmount(amount)
     }
     sellItem(amount=1){
         let item=inventory.getItemByName(this.name)||console.log("not in inventory FIXIT !!!")
         if(!item)return
         if(item.subtractAmount(amount))
-            money.addAmount(this.sellPrice*amount)
+            items.money.addAmount(this.sellPrice*amount)
     }
 
 
@@ -93,7 +94,7 @@ class Item {
         fill(0)
         text(this.name, STYLE.itemHeightInInventory + 1, textSize())
         text(this.amount, STYLE.itemHeightInInventory + 1, 2 * textSize())
-        if (image) this.showImage()
+        if (this.image) this.showImage()
     }
     showImage(x = 0, y = 0, w = STYLE.itemHeightInInventory, h = w) {
         image(this.image, x, y, w + 1, h + 1)
@@ -102,25 +103,26 @@ class Item {
         fill(255)
         let spotSize = STYLE.treeSpotSize
         let itemSize = STYLE.itemHeightInInventory
-        rect(x, y, spotSize, spotSize)
-        
+        rect(x, y, spotSize, itemSize+textSize())
+        imageMode(CENTER)
         image(this.image, x + spotSize / 2, y + itemSize / 2, itemSize, itemSize)
 
         let pos=this.buyButton.show(color(0,255,0))
         pos.x=pos.x+spotSize/4
         pos.y=pos.y+textSize()
         fill(0)
-        text("$"+this.buyPrice,pos.x,pos.y)
-       // text(this.amount,pos.x,pos.y+textSize())
+        text("BUY",pos.x,pos.y)
+        text("$"+this.buyPrice,pos.x,pos.y+textSize())
 
 
         pos=this.sellButton.show(color(255,0,0))
         pos.x=pos.x+spotSize/4
         pos.y=pos.y+textSize()
         fill(0)
-        text("$"+this.sellPrice,pos.x,pos.y)
+        text("SELL",pos.x,pos.y)
+        text("$"+this.sellPrice,pos.x,pos.y+textSize())
         let getItem=inventory.getItemByName(this.name)||{amount:0}
-        text(getItem.amount,pos.x,pos.y+textSize())
+        text(getItem.amount,pos.x,pos.y+textSize()*2)
 
         text(this.name, x + spotSize / 2, y + itemSize + textSize() / 2)
 
@@ -129,7 +131,12 @@ class Item {
         let itemSize = STYLE.itemHeightInInventory + textSize()
         let spotSize = STYLE.treeSpotSize
         let middleX = (spotSize / 2)
+
         this.setButton(new Button(x, y + itemSize, spotSize / 2, spotSize - itemSize), "buy")
+        if(this.buyPrice==0)this.buyButton.setImage(images.notBuyButtonImage)
+        else this.buyButton.setImage(images.buyButtonImage)
         this.setButton(new Button(x + middleX, y + itemSize, spotSize / 2, spotSize - itemSize), "sell")
+        this.sellButton.setImage(images.sellButtonImage)
+
     }
 }

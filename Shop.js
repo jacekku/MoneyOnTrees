@@ -5,26 +5,16 @@ class Shop{
         this.w=w
         this.h=h
         this.items=[
-            new Item("Sapling",0,saplingImage,null,15,2)
-            ,new Item("FILLER0",10,saplingImage,null,20,10)
-            ,new Item("FILLER1",10,saplingImage,null,20,10)
-            ,new Item("FILLER2",10,saplingImage,null,20,10)
-            ,new Item("FILLER3",10,saplingImage,null,20,10)
-            ,new Item("FILLER4",10,saplingImage,null,20,10)
-            ,new Item("FILLER5",10,saplingImage,null,20,10)
-            ,new Item("FILLER6",10,saplingImage,null,20,10)
-            ,new Item("FILLER7",10,saplingImage,null,20,10)
-            ,new Item("FILLER8",10,saplingImage,null,20,10)
-            ,new Item("FILLER9",10,saplingImage,null,20,10)
-            ,new Item("FILLER10",10,saplingImage,null,20,10)
+            items.oak_saplings
+            ,items.oak_log
+            ,items.oak_plank
             ]
     }
     show(){
-        fill(255)
-        rect(this.x,this.y,this.w,this.h)
-        rect(this.x,this.y+textSize()+1,this.w,this.h-textSize()-1)
-        fill(0)
-        text("SHOP",this.x+this.w/2,textSize())
+        image(images.plankBackgroundImage,this.x, this.y,this.w+1,textSize()+1)
+        image(images.woodFrame,this.x,this.y+textSize()+1,this.w,this.h-textSize()-1)
+        fill(255,245,144)
+        text("SHOP $"+items.money.amount,this.x+this.w/2,textSize())
         let tSize=STYLE.textSize
         push()
         textSize(20)

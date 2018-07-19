@@ -4,11 +4,11 @@ class Orchard {
         this.fillTreeSpots()
     }
     show() {
-        fill(255)
-        rect(STYLE.orchard.x, STYLE.orchard.y, STYLE.orchard.width, STYLE.orchard.height)
-        fill(100, 255, 100)
+        image(images.plankBackgroundImage,STYLE.orchard.x, STYLE.orchard.y,STYLE.orchard.width,textSize())
+        fill("#4CFF00")
+        // image(woodFrame,STYLE.orchard.x, STYLE.orchard.y+textSize(), STYLE.orchard.width, STYLE.orchard.height - textSize())
         rect(STYLE.orchard.x, STYLE.orchard.y+textSize(), STYLE.orchard.width, STYLE.orchard.height - textSize())
-        fill(0)
+        fill(255,245,144)
         text("ORCHARD", STYLE.orchard.y+STYLE.orchard.width/2, textSize())
         for (const treeSpot of this.treeSpots) {
             treeSpot.show()
@@ -40,6 +40,16 @@ class Orchard {
             treeSpot.isClicked()
         }
     }
-
-
+    getTreeSpotStates(){
+        let output=[]
+        for(const spot of this.treeSpots){
+            output.push(spot.getState())
+        }
+        return output
+    }
+    setTreeSpotStates(state){
+        for(let i=0;i<this.treeSpots.length;i++){
+            this.treeSpots[i].setState(state[i])
+        }
+    }
 }

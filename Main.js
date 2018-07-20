@@ -67,12 +67,8 @@ function draw() {
         tick()
         oldTickTime = Date.now() + newTickEveryMS;
     }
-    fill(0)
-    if (mouseObject.action && mouseObject.action.image) {
-        image(mouseObject.action.image, mouseX, mouseY, 40, 40)
-    }
-    rect(mouseX, mouseY, 2, 10)
-    rect(mouseX, mouseY, 10, 2)
+    
+    mouseObject.show()
 }
 
 function mouseClicked() {

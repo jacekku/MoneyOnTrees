@@ -5,10 +5,7 @@ tickCounter = 0
 
 let mouseObject
 let orchard, inventory,  money, oak_saplings, shop
-let buttons={
-    harvestButton:{},
-    shopButton:{}
-}
+
 let shopOpen=false
 let Actions
 function preload() {

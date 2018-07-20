@@ -161,5 +161,7 @@ function loadGame() {
 function hardResetGame() {
     localStorage.clear()
     items=setupItems()
+    ticksCounter=0
     saveGame()
+    loadGame()
 }

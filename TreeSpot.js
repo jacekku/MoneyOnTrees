@@ -7,8 +7,9 @@ class TreeSpot {
         this.button = new Button(this.x, this.y, STYLE.treeSpotSize, STYLE.treeSpotSize)
     }
     show() {
-        fill("#814f3e")
-        image(images.groundImage, this.x, this.y, STYLE.treeSpotSize, STYLE.treeSpotSize)
+        fill(255)
+        rect( this.x, this.y, STYLE.treeSpotSize, STYLE.treeSpotSize)
+        //image(images.groundImage, this.x, this.y, STYLE.treeSpotSize, STYLE.treeSpotSize)
         if (this.tree) this.tree.show()
 
     }
@@ -42,7 +43,7 @@ class TreeSpot {
     onClick() {
         if (!this.tree && mouseObject.action.id == Actions.PLANT.id) {
             this.plantTree()
-        } else if (this.tree.growthStage == 5 && mouseObject.action.id == Actions.HARVEST.id) {
+        } else if (this.tree.canHarvest() && mouseObject.action.id == Actions.HARVEST.id) {
             this.sellTree()
         }
 

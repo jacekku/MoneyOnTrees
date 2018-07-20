@@ -1,7 +1,7 @@
 class Inventory {
-    constructor() {
+    constructor(...items) {
         this.button = new Button(620, 10, width - 620 - 10, 600)
-        this.items = []
+        this.items = [...items]
     }
     show() {
         let bound = STYLE.inventory

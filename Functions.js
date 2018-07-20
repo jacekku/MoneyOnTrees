@@ -34,8 +34,11 @@ window.addEventListener("unload", () => {
 
 function loadAllImages() {
     images = {
-        treeSheet: loadImage('assets/TreeSheet.png'),
-        saplingImage: loadImage('assets/sapling.png'),
+        oak_sheet: loadImage('assets/trees/oak/oak_sheet.png'),
+        oak_sapling: loadImage('assets/trees/oak/oak_sapling.png'),
+        oak_log: loadImage('assets/trees/oak/oak_log.png'),
+        oak_plank: loadImage('assets/trees/oak/oak_plank.png'),
+
         coinImage: loadImage('assets/coin.png'),
         shopImage: loadImage('assets/shop.png'),
         groundImage: loadImage('assets/ground.png'),
@@ -44,8 +47,6 @@ function loadAllImages() {
         buyButtonImage: loadImage('assets/buyButton.png'),
         notBuyButtonImage: loadImage('assets/notBuyButton.png'),
         sellButtonImage: loadImage('assets/sellButton.png'),
-        logImage: loadImage('assets/log.png'),
-        plankImage: loadImage('assets/planks.png'),
         harvestImage: loadImage('assets/harvest.png')
     }
 }
@@ -65,7 +66,7 @@ function setupActions() {
         },
         PLANT: {
             id: 2,
-            image: images.saplingImage || "saplingImage"
+            image: images.oak_sapling || "oak_sapling"
         }
     };
     return Actions

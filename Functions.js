@@ -9,6 +9,13 @@ function mouseInsideRect(x, y, w, h) {
     return pointInsideRect(mouseX, mouseY, x, y, w, h)
 }
 
+function catchUpOnTicks(leftPageAt){
+    let missedTicks = Math.floor((Date.now() - leftPageAt) / newTickEveryMS)
+    for (let i = 0; i < missedTicks; i++) {
+        tick()
+    }
+}
+
 
 leftPageAt = Date.now()
 document.onvisibilitychange = function () {
@@ -16,14 +23,11 @@ document.onvisibilitychange = function () {
         leftPageAt = Date.now()
         saveGame()
     } else {
-        let missedTicks = Math.floor((Date.now() - leftPageAt) / newTickEveryMS)
-        for (let i = 0; i < missedTicks; i++) {
-            tick()
-        }
+        catchUpOnTicks(leftPageAt)
     }
 }
 window.addEventListener("unload", () => {
-   // if (localStorage.length == 0) {} else saveGame()
+   saveGame()
 })
 
 
@@ -66,7 +70,10 @@ function setupActions() {
     };
     return Actions
 }
-
+let buttons={
+    harvestButton:{},
+    shopButton:{}
+}
 
 
 const STYLE = {
@@ -138,7 +145,8 @@ function saveGame() {
     let saveObject = {
         tickCounter,
         itemsAmounts:getAmounts(),
-        treeSpotStates:orchard.getTreeSpotStates()
+        treeSpotStates:orchard.getTreeSpotStates(),
+        leftPageAt
     }
     console.log("saving", saveObject)
     localStorage.setObject("saveFile", saveObject)
@@ -155,13 +163,17 @@ function loadGame() {
         tickCounter = saveObject.tickCounter
         setAmounts(saveObject.itemsAmounts)
         orchard.setTreeSpotStates(saveObject.treeSpotStates)
+        leftPageAt=saveObject.leftPageAt
+        catchUpOnTicks(leftPageAt)
     }
 }
 
 function hardResetGame() {
     localStorage.clear()
     items=setupItems()
-    ticksCounter=0
+    tickCounter=0
     saveGame()
     loadGame()
+    orchard=new Orchard()
+    inventory=new Inventory(...items.iterator)
 }

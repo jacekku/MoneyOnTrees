@@ -1,5 +1,5 @@
 class Tree {
-    constructor(spot, type, growthStage = 0, growthCounter = 0, growthThreshold = 20) {
+    constructor(spot, type, growthStage = 0, growthCounter = 0, growthThreshold = 200) {
         this.spot = spot
         this.type = type
         this.growthStage = growthStage
@@ -9,7 +9,7 @@ class Tree {
     }
     show() {
         let stageSize=200
-        image(images.oak_sheet, this.spot.x, this.spot.y, STYLE.treeSpotSize, STYLE.treeSpotSize, this.growthStage * stageSize, 0, stageSize, stageSize)
+        image(images[this.type+"_sheet"], this.spot.x, this.spot.y, STYLE.treeSpotSize, STYLE.treeSpotSize, this.growthStage * stageSize, 0, stageSize, stageSize)
     }
     tick() {
         this.growthCounter++

@@ -4,8 +4,9 @@ function setupItems() {
     let items = {
         money: new Item("Money", 10, images.coinImage),
         oak_saplings: new Item("Sapling", 5, images.saplingImage, Actions.PLANT, 15, 2),
-        oak_log: new Item("Oak Log", 10, images.logImage, null, null, 20),
-        oak_plank: new Item("Oak Plank", 10, images.plankImage, null, null, 10)
+        oak_log: new Item("Oak Log", 0, images.logImage, null, null, 20),
+        oak_plank: new Item("Oak Plank", 0, images.plankImage, null, null, 10),
+        iterator:{}
     }
     return items
 }
@@ -19,6 +20,12 @@ function getAmounts(){
 
 function setAmounts(amountsObject){
     for(const item in items){
-        items[item].setAmount(amountsObject[item])
+        if(items[item] instanceof Item)items[item].setAmount(amountsObject[item])
+    }
+    items.iterator[Symbol.iterator]=function*(){
+        for(const item in items){
+            if(items[item] instanceof Item)yield items[item]
+        }
     }
 }
+

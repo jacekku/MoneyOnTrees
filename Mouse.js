@@ -1,13 +1,18 @@
 class Mouse{
     constructor(){
         this.action
+        this.busy=false
     }
     setAction(action){
         this.action=action
     }
-    startAction(action,startTick,duration){
-
+    startAction(action,duration){
+        if(this.busy)return false
     }
+
+
+
+
     show(){
         fill(0)
         if (mouseObject.action && mouseObject.action.image) {

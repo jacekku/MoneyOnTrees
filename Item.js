@@ -54,14 +54,14 @@ class Item {
     }
     buyItem(amount=1){
         if(this.buyPrice==0)return
-        let item=inventory.getItemByName(this.name)||console.log("not in inventory FIXIT !!!")
+        let item=inventory.getItemByName(this.name)||console.error("not in inventory FIXIT !!!")
         if(!item)return
         // TODO change this so the item object doesnt need to know about other items
         if(items.money.subtractAmount(this.buyPrice*amount))
         item.addAmount(amount)
     }
     sellItem(amount=1){
-        let item=inventory.getItemByName(this.name)||console.log("not in inventory FIXIT !!!")
+        let item=inventory.getItemByName(this.name)||console.error("not in inventory FIXIT !!!")
         if(!item)return
         if(item.subtractAmount(amount))
             items.money.addAmount(this.sellPrice*amount)

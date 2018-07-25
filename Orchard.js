@@ -33,7 +33,6 @@ class Orchard {
         }
     }
     onClick(){
-        console.log("Clicked")
     }
     isClicked(){
         for (const treeSpot of this.treeSpots) {

@@ -13,12 +13,13 @@ class Mouse {
      * @param {object} caller object starting the action, used to call the action after the time passes
      * @param {number} duration how long the action takes to complete in MS
      */
-    startAction(caller, callback, duration) {
+    startAction(caller, callback, duration,...args) {
         if (this.busy) return false
         this.actionStartedAt = Date.now()
         this.busy = true
         this.caller = caller
         this.callback = callback
+        this.args=args
         this.actionEndsAt = this.actionStartedAt + duration
 
     }
@@ -27,7 +28,7 @@ class Mouse {
         return false
     }
     actionComplete() {
-        this.callback.call(this.caller)
+        this.callback.call(this.caller,...this.args)
         this.busy = false
         this.callback=null
         this.caller=null

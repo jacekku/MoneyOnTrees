@@ -120,6 +120,7 @@ Storage.prototype.getObject = function (key) {
 }
 
 
+
 function recastObjects(items, ClassName) {
     for (const item in items) {
         items[item] = recastObject(items[item], ClassName)
@@ -149,12 +150,15 @@ function recastObject(item, className) {
  * 
  * 
  */
+
 function saveGame() {
     let saveObject = {
         tickCounter,
         itemsAmounts:getAmounts(),
         treeSpotStates:orchard.getTreeSpotStates(),
-        leftPageAt
+        leftPageAt,
+        gameVersion,
+        resetAfterUpdate
     }
     console.log("saving", saveObject)
     localStorage.setObject("saveFile", saveObject)
@@ -167,12 +171,20 @@ function loadGame() {
     if (saveObject == null) {
         saveGame()
     } else {
+        console.log("loading",saveObject)
         tickCounter = saveObject.tickCounter
         setAmounts(saveObject.itemsAmounts)
         orchard.setTreeSpotStates(saveObject.treeSpotStates)
         leftPageAt=saveObject.leftPageAt
         catchUpOnTicks(leftPageAt)
         inventory=new Inventory(...items.iterator)
+        if(saveObject.gameVersion==null || saveObject.gameVersion<gameVersion){
+            console.error(`Game is out of date current version:${saveObject.gameVersion} update version:${gameVersion}`)
+            if(resetAfterUpdate){
+                console.log("RESETING")
+                hardResetGame()
+            }
+        }
     }
 }
 

@@ -7,7 +7,8 @@ class Shop{
         this.items=[
             items.oak_saplings
             ,items.oak_log
-            ,items.oak_plank
+            ,items.pine_saplings
+            ,items.pine_log
             ]
     }
     show(){

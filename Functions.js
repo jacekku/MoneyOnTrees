@@ -34,10 +34,15 @@ window.addEventListener("unload", () => {
 
 function loadAllImages() {
     images = {
-        oak_sheet: loadImage('assets/trees/oak/oak_sheet.png'),
-        oak_sapling: loadImage('assets/trees/oak/oak_sapling.png'),
-        oak_log: loadImage('assets/trees/oak/oak_log.png'),
-        oak_plank: loadImage('assets/trees/oak/oak_plank.png'),
+        oak_sheet: loadImage    ('assets/trees/oak/oak_sheet.png'),
+        oak_sapling: loadImage  ('assets/trees/oak/oak_sapling.png'),
+        oak_log: loadImage      ('assets/trees/oak/oak_log.png'),
+        oak_plank: loadImage    ('assets/trees/oak/oak_plank.png'),
+
+        pine_sheet: loadImage   ('assets/trees/pine/pine_sheet.png'),
+        pine_sapling: loadImage ('assets/trees/pine/pine_sapling.png'),
+        pine_log: loadImage     ('assets/trees/pine/pine_log.png'),
+        pine_plank: loadImage   ('assets/trees/pine/pine_plank.png'),
 
         coinImage: loadImage('assets/coin.png'),
         shopImage: loadImage('assets/shop.png'),
@@ -66,8 +71,10 @@ function setupActions() {
         },
         PLANT: {
             id: 2,
-            image: images.oak_sapling || "oak_sapling"
-        }
+            image: null,
+            plantType:null
+        },
+        
     };
     return Actions
 }
@@ -158,14 +165,14 @@ function saveGame() {
 function loadGame() {
     let saveObject = localStorage.getObject("saveFile")
     if (saveObject == null) {
-        // saveGame()
+        saveGame()
     } else {
-        console.log("loading",saveObject)
         tickCounter = saveObject.tickCounter
         setAmounts(saveObject.itemsAmounts)
         orchard.setTreeSpotStates(saveObject.treeSpotStates)
         leftPageAt=saveObject.leftPageAt
         catchUpOnTicks(leftPageAt)
+        inventory=new Inventory(...items.iterator)
     }
 }
 

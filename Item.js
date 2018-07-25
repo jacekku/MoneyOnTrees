@@ -1,16 +1,26 @@
 class Item {
-    constructor(name, amount, image, action, buyPrice, sellPrice) {
+    constructor(name, amount, image, action, buyPrice, sellPrice,plantType) {
         this.name = name || "unnamed item"
         this.amount = amount
         this.image = image
+        this.sellPrice = sellPrice || 0
+        this.buyPrice = buyPrice || 0
+        this.action = {}
+        this.plantType=plantType
         this.button
         this.buyButton
         this.sellButton
-        this.sellPrice = sellPrice || 0
-        this.buyPrice = buyPrice || 0
-        this.id
-        this.action = action
+        this.setupAction(action)
     }
+    setupAction(action){
+        if(action && action.id==Actions.PLANT.id){
+            Object.assign(this.action,action)
+            this.action.image=this.image
+            this.action.plantType=this.plantType
+        }
+    }
+
+
     addAmount(amount) {
         this.amount += amount
         return true
@@ -60,18 +70,20 @@ class Item {
 
 
     onClick(buttonID=0) {
-        //button
-        if(buttonID==0){mouseObject.setAction(this.action)}
-        //buy
+        if(buttonID==0){
+            console.log("is clicked "+this.plantType,this.action)
+            mouseObject.setAction(this.action)
+            
+        }
         else if(buttonID==1){
             this.buyItem()
         }
-        //sell
         else if(buttonID==2){
             this.sellItem()
         }
     }
     isClicked() {
+        
         if (this.button && this.button.isClicked()) {
             this.onClick(0)
             return true

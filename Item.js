@@ -71,7 +71,6 @@ class Item {
 
     onClick(buttonID=0) {
         if(buttonID==0){
-            console.log("is clicked "+this.plantType,this.action)
             mouseObject.setAction(this.action)
             
         }

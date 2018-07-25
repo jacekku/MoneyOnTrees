@@ -42,18 +42,18 @@ class TreeSpot {
 
     onClick() {
         if (!this.tree && mouseObject.action.id == Actions.PLANT.id) {
-            mouseObject.startAction(this,this.plantTree,2000)
+            mouseObject.startAction(this,this.plantTree,1000,mouseObject.action.plantType)
         } else if (this.tree.canHarvest() && mouseObject.action.id == Actions.HARVEST.id) {
-            mouseObject.startAction(this,this.sellTree,5000)
+            mouseObject.startAction(this,this.sellTree,1000)
         }
 
     }
-    plantTree() {
-        this.tree = new Tree(this, "oak")
-        items.oak_saplings.subtractAmount(1)
+    plantTree(type) {
+        this.tree = new Tree(this, type)
+        items[type+"_saplings"].subtractAmount(1)
     }
     sellTree() {
-        items.oak_log.addAmount(1)
+        items[this.tree.type+"_log"].addAmount(1)
         this.tree = null
     }
 }

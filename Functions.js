@@ -182,6 +182,7 @@ function loadGame() {
             console.error(`Game is out of date current version:${saveObject.gameVersion} update version:${gameVersion}`)
             if(resetAfterUpdate){
                 console.log("RESETING")
+                localStorage.setObject("oldSave",saveObject)
                 hardResetGame()
             }
         }

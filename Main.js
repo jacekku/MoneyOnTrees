@@ -85,7 +85,6 @@ function mouseClicked() {
 function tick(){
     orchard.tick()
     inventory.tick()
-    mouseObject.tick()
     tickCounter++
 }
 

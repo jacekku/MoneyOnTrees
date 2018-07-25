@@ -42,9 +42,9 @@ class TreeSpot {
 
     onClick() {
         if (!this.tree && mouseObject.action.id == Actions.PLANT.id) {
-            mouseObject.startAction(this,this.plantTree,2000)
+            this.plantTree()
         } else if (this.tree.canHarvest() && mouseObject.action.id == Actions.HARVEST.id) {
-            mouseObject.startAction(this,this.sellTree,5000)
+            this.sellTree()
         }
 
     }

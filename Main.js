@@ -49,7 +49,7 @@ function setup() {
     buttons.shopButton.setOnClick(function () {
         shopOpen = !shopOpen
     })
-    loadGame()
+    loadGame(mainSave)
 }
 
 function draw() {

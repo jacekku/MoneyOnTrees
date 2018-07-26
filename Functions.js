@@ -18,16 +18,17 @@ function catchUpOnTicks(leftPageAt){
 
 
 leftPageAt = Date.now()
+let mainSave="mainSave"
 document.onvisibilitychange = function () {
     if (document.visibilityState == "hidden") {
         leftPageAt = Date.now()
-        saveGame()
+        saveGame(mainSave)
     } else {
         catchUpOnTicks(leftPageAt)
     }
 }
 window.addEventListener("unload", () => {
-   saveGame()
+   saveGame(mainSave)
 })
 
 
@@ -160,7 +161,11 @@ function recastObject(item, className) {
  * 
  */
 
-function saveGame() {
+function saveGame(saveName) {
+    if(saveName!=mainSave){
+        console.log("\n\nSAVE NAME CHANGED TO "+saveName+"\n\n")
+        mainSave=saveName
+    }
     let saveObject = {
         tickCounter,
         itemsAmounts:getAmounts(),
@@ -169,23 +174,27 @@ function saveGame() {
         gameVersion,
         resetAfterUpdate
     }
-    console.log("saving", saveObject)
-    localStorage.setObject("saveFile", saveObject)
+    console.log("saving "+saveName, saveObject)
+    localStorage.setObject(saveName, saveObject)
 }
 
 
 
-function loadGame() {
-    let saveObject = localStorage.getObject("saveFile")
+function loadGame(saveName) {
+    let saveObject = localStorage.getObject(saveName)
     if (saveObject == null) {
-        saveGame()
+        saveGame(saveName)
     } else {
-        console.log("loading",saveObject)
+        console.log("loading "+saveName,saveObject)
+        orchard=new Orchard()
+
         tickCounter = saveObject.tickCounter
         setAmounts(saveObject.itemsAmounts)
         orchard.setTreeSpotStates(saveObject.treeSpotStates)
         leftPageAt=saveObject.leftPageAt
-        catchUpOnTicks(leftPageAt)
+        
+        if(saveName=="mainSave")catchUpOnTicks(leftPageAt)
+        
         inventory=new Inventory(...items.iterator)
         if(saveObject.gameVersion==null || saveObject.gameVersion<gameVersion){
             console.error(`Game is out of date current version:${saveObject.gameVersion} update version:${gameVersion}`)
@@ -203,8 +212,8 @@ function hardResetGame() {
     localStorage.clear()
     items=setupItems()
     tickCounter=0
-    saveGame()
-    loadGame()
+    saveGame("mainSave")
+    loadGame("mainSave")
     orchard=new Orchard()
     inventory=new Inventory(...items.iterator)
 }

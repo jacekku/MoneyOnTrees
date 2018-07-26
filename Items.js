@@ -1,5 +1,5 @@
 let items = {}
-
+let treeItems={}
 function setupItems() {
     let items = {
         money: new Item("Money", 10, images.coinImage),
@@ -11,6 +11,20 @@ function setupItems() {
         pine_plank: new Item("Pine Plank", 0, images.pine_plank, null, null, 10),
 
         iterator:{}
+    }
+    treeItems={
+        oak:{
+            sellItem:items.oak_log,
+            harvestItem:null
+        },
+        pine:{
+            sellItem:items.pine_log,
+            harvestItem:null
+        },
+        cherry:{
+            sellItem:items.cherry_log,
+            harvestItem:items.cherry_fruit
+        }
     }
     return items
 }

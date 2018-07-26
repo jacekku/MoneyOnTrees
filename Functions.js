@@ -44,6 +44,15 @@ function loadAllImages() {
         pine_log: loadImage     ('assets/trees/pine/pine_log.png'),
         pine_plank: loadImage   ('assets/trees/pine/pine_plank.png'),
 
+        cherry_sheet: loadImage   ('assets/trees/cherry/cherry_sheet.png'),
+        cherry_sapling: loadImage ('assets/trees/cherry/cherry_sapling.png'),
+        cherry_log: loadImage     ('assets/trees/cherry/cherry_log.png'),
+        cherry_plank: loadImage   ('assets/trees/cherry/cherry_plank.png'),
+        cherry_fruit: loadImage   ('assets/trees/cherry/cherry_fruit.png'),
+        cherry_harvested: loadImage   ('assets/trees/cherry/cherry_harvested.png'),
+
+
+
         coinImage: loadImage('assets/coin.png'),
         shopImage: loadImage('assets/shop.png'),
         groundImage: loadImage('assets/ground.png'),

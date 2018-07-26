@@ -5,11 +5,14 @@ class Tree {
         this.growthStage = growthStage
         this.growthCounter = growthCounter
         this.growthThreshold = growthThreshold
-        this.maxGrowthStage=14
+        this.maxGrowthStage = 14
+        this.sellItem=treeItems[this.type].sellItem
+        this.harvestItem=treeItems[this.type].harvestItem
+        this.harvested = false
     }
     show() {
-        let stageSize=200
-        image(images[this.type+"_sheet"], this.spot.x, this.spot.y, STYLE.treeSpotSize, STYLE.treeSpotSize, this.growthStage * stageSize, 0, stageSize, stageSize)
+        let stageSize = 200
+        image(images[this.type + "_sheet"], this.spot.x, this.spot.y, STYLE.treeSpotSize, STYLE.treeSpotSize, this.growthStage * stageSize, 0, stageSize, stageSize)
     }
     tick() {
         this.growthCounter++
@@ -24,7 +27,7 @@ class Tree {
             growthStage: this.growthStage,
             growthCounter: this.growthCounter,
             growthThreshold: this.growthThreshold,
-            maxGrowthStage:this.maxGrowthStage
+            maxGrowthStage: this.maxGrowthStage
         }
     }
     setState(state) {
@@ -34,7 +37,11 @@ class Tree {
         this.growthThreshold = state.growthThreshold
         this.maxGrowthStage = state.maxGrowthStage
     }
-    canHarvest(){
-        return this.maxGrowthStage===this.growthStage
+
+    canSell() {
+        return this.maxGrowthStage === this.growthStage && (this.harvestItem?this.harvested:true)
+    }
+    canHarvest() {
+        return this.maxGrowthStage === this.growthStage && this.harvestItem && !this.harvested 
     }
 }

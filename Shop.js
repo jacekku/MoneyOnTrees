@@ -9,11 +9,14 @@ class Shop{
             ,items.oak_log
             ,items.pine_saplings
             ,items.pine_log
+            ,items.oak_plank
+            ,items.pine_plank
             ]
     }
     show(){
-        image(images.plankBackgroundImage,this.x, this.y,this.w+1,textSize()+1)
-        image(images.woodFrame,this.x,this.y+textSize()+1,this.w,this.h-textSize()-1)
+        // image(images.plankBackgroundImage,this.x, this.y,this.w+1,textSize()+1)
+        // image(images.woodFrame,this.x,this.y+textSize()+1,this.w,this.h-textSize()-1)
+        drawView(this.x, this.y, this.w, this.h)
         fill(255,245,144)
         text("SHOP $"+items.money.amount,this.x+this.w/2,textSize())
         let tSize=STYLE.textSize

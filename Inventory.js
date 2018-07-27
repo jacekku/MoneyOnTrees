@@ -5,8 +5,11 @@ class Inventory {
     }
     show() {
         let bound = STYLE.inventory
-        image(images.plankBackgroundImage,bound.x, bound.y,bound.width,textSize())
-        image(images.woodFrame,bound.x, bound.y + textSize(), bound.width, bound.height - textSize())
+        // image(images.plankBackgroundImage,bound.x, bound.y,bound.width,textSize())
+        // image(images.woodFrame,bound.x, bound.y + textSize(), bound.width, bound.height - textSize())
+
+        drawView(bound.x, bound.y, bound.width, bound.height)
+
         fill(255,245,144)
         text("INVENTORY", bound.x + bound.width / 2, textSize())
 

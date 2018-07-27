@@ -56,6 +56,7 @@ function loadAllImages() {
 
         coinImage: loadImage('assets/coin.png'),
         shopImage: loadImage('assets/shop.png'),
+        workshopImage: loadImage('assets/workshop.png'),
         groundImage: loadImage('assets/ground.png'),
         plankBackgroundImage: loadImage('assets/plankBackground.png'),
         woodFrame: loadImage('assets/woodFrame.png'),
@@ -90,7 +91,8 @@ function setupActions() {
 }
 let buttons={
     harvestButton:{},
-    shopButton:{}
+    shopButton:{},
+    workshopButton:{}
 }
 
 
@@ -216,4 +218,10 @@ function hardResetGame() {
     loadGame("mainSave")
     orchard=new Orchard()
     inventory=new Inventory(...items.iterator)
+}
+
+
+function drawView(x,y,w,h){
+    image(images.plankBackgroundImage,x, y,w+1,textSize()+1)
+    image(images.woodFrame,x,y+textSize()+1,w,h-textSize()-1)
 }

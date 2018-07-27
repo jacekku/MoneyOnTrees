@@ -5,7 +5,7 @@ tickCounter = 0
 
 let mouseObject
 let orchard, inventory,  money, oak_saplings, shop
-
+let workshopOpen=false
 let shopOpen=false
 let Actions
 function preload() {
@@ -32,6 +32,7 @@ function setup() {
     if(!orchard)orchard = new Orchard()
     inventory = new Inventory()
     shop = new Shop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
+    workshop = new Workshop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     inventory.items.push(items.money)
     inventory.items.push(items.oak_saplings)
     inventory.items.push(items.oak_log)
@@ -43,12 +44,24 @@ function setup() {
     buttons.harvestButton.setImage(images.harvestImage)
     buttons.harvestButton.setOnClick(function () {
         mouseObject.setAction(Actions.HARVEST)
+        shopOpen=false
+        workshopOpen=false
     })
     buttons.shopButton = new Button(STYLE.buttonX + STYLE.margin + STYLE.buttonSize, STYLE.buttonY)
     buttons.shopButton.setImage(images.shopImage)
     buttons.shopButton.setOnClick(function () {
-        shopOpen = !shopOpen
+        shopOpen = true
+        workshopOpen=false
     })
+    buttons.workshopButton = new Button(STYLE.buttonX + STYLE.margin*2 + STYLE.buttonSize*2, STYLE.buttonY)
+    buttons.workshopButton.setImage(images.workshopImage)
+    buttons.workshopButton.setOnClick(function () {
+        workshopOpen=true
+        shopOpen = false
+        
+    })
+
+
     loadGame(mainSave)
 }
 
@@ -56,7 +69,11 @@ function draw() {
     background(128)
     if (shopOpen) {
         shop.show()
-    } else {
+    }
+    else if (workshopOpen) {
+        workshop.show()
+    } 
+     else {
         orchard.show()
         inventory.show()
     }
@@ -74,7 +91,11 @@ function draw() {
 function mouseClicked() {
     if (shopOpen) {
         shop.isClicked()
-    } else {
+    }
+    else if (workshopOpen) {
+        workshop.isClicked()
+    } 
+     else {
         orchard.isClicked()
         inventory.isClicked()
     }

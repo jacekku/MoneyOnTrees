@@ -53,6 +53,10 @@ function loadAllImages() {
         cherry_harvested: loadImage   ('assets/trees/cherry/cherry_harvested.png'),
 
 
+        settings: loadImage('assets/settings.png'),
+        reset: loadImage('assets/reset.png'),
+        sound: loadImage('assets/sound.png'),
+
 
         coinImage: loadImage('assets/coin.png'),
         shopImage: loadImage('assets/shop.png'),
@@ -224,4 +228,12 @@ function hardResetGame() {
 function drawView(x,y,w,h){
     image(images.plankBackgroundImage,x, y,w+1,textSize()+1)
     image(images.woodFrame,x,y+textSize()+1,w,h-textSize()-1)
+}
+
+function openView(viewToOpen){
+    for(let view in views){
+        views[view]=false
+        
+    }
+    views[viewToOpen]=true
 }

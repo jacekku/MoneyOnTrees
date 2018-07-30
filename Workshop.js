@@ -70,11 +70,8 @@ class Workshop{
     }
 
     craftItem(item) {
-        console.log("Craft ",item)
-            let canCraft = true
             for (let res of item.resources) {
                 if (res[0].amount < res[1]) {
-                    canCraft = false
                     return false
                 }
             }

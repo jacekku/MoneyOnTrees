@@ -14,6 +14,16 @@ class Workshop{
                     [items.oak_plank,4]
                 ],
                 buttons:[]
+            },
+            "Pine Planks": {
+                resources: [
+                    [items.pine_log, 1]
+
+                ],
+                products: [
+                    [items.pine_plank,4]
+                ],
+                buttons:[]
             }
         }
         this.setButtons()
@@ -35,9 +45,10 @@ class Workshop{
 
 
         this.showItem(startingX,startingY,spotSize,this.items["Oak Planks"])
-
+        this.showItem(startingX + spotSize+STYLE.margin,startingY,spotSize,this.items["Pine Planks"])
     }
     showItem(x,y,size,item){
+        fill(255,245,144)
         rect(x,y,size,size)
         image(item.products[0][0].image,x,y,size/2,size/2)
         

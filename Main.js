@@ -6,7 +6,7 @@ tickCounter = 0
 let mouseObject
 let orchard, inventory,  money, oak_saplings, shop
 
-let shopOpen=false
+
 let Actions
 function preload() {
     loadAllImages()
@@ -27,39 +27,44 @@ function setup() {
    
     STYLE.buttonSize = height - (STYLE.orchard.height + 3 * STYLE.margin)
     STYLE.orchard.viewY += STYLE.textSize + STYLE.margin
-    STYLE.treeSpotSize = (STYLE.orchard.height-textSize()-(STYLE.margin*4))/3
+
+    STYLE.itemInShopSize = (STYLE.orchard.height-textSize()-(STYLE.margin*4))/3
+    STYLE.treeSpotSize = 100
+    
     STYLE.inventory.width = width - 620 - 10
     if(!orchard)orchard = new Orchard()
     inventory = new Inventory()
     shop = new Shop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
-    inventory.items.push(items.money)
-    inventory.items.push(items.oak_saplings)
-    inventory.items.push(items.oak_log)
-    inventory.items.push(items.oak_plank)
+  
+    workshop = new Workshop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
+    settings=new Settings()
 
-
-
-    buttons.harvestButton = new Button(STYLE.buttonX, STYLE.buttonY)
-    buttons.harvestButton.setImage(images.harvestImage)
-    buttons.harvestButton.setOnClick(function () {
-        mouseObject.setAction(Actions.HARVEST)
-    })
-    buttons.shopButton = new Button(STYLE.buttonX + STYLE.margin + STYLE.buttonSize, STYLE.buttonY)
-    buttons.shopButton.setImage(images.shopImage)
-    buttons.shopButton.setOnClick(function () {
-        shopOpen = !shopOpen
-    })
+    setupButtons();
     loadGame(mainSave)
 }
 
 function draw() {
     background(128)
-    if (shopOpen) {
+    if (views.shop) {
         shop.show()
-    } else {
-        orchard.show()
-        inventory.show()
     }
+    else if (views.workshop) {
+        workshop.show()
+    }
+    else {
+        orchard.show()
+        if (views.settings) {
+            settings.show()
+        } else {
+            inventory.show()
+        }
+
+    }
+    
+
+
+
+
     for(const button in buttons){
         buttons[button].show()
     }
@@ -72,11 +77,19 @@ function draw() {
 }
 
 function mouseClicked() {
-    if (shopOpen) {
+    if (views.shop) {
         shop.isClicked()
-    } else {
+    }
+    else if (views.workshop) {
+        workshop.isClicked()
+    } 
+     else {
         orchard.isClicked()
-        inventory.isClicked()
+        if (views.settings) {
+           settings.isClicked()
+        } else {
+            inventory.isClicked()
+        }
     }
     for(const button in buttons){
         buttons[button].isClicked()
@@ -84,7 +97,6 @@ function mouseClicked() {
 }
 function tick(){
     orchard.tick()
-    inventory.tick()
     mouseObject.tick()
     tickCounter++
 }

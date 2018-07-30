@@ -4,10 +4,14 @@ class Orchard {
         this.fillTreeSpots()
     }
     show() {
-        image(images.plankBackgroundImage,STYLE.orchard.x, STYLE.orchard.y,STYLE.orchard.width,textSize())
-        fill("#4CFF00")
+        // image(images.plankBackgroundImage,STYLE.orchard.x, STYLE.orchard.y,STYLE.orchard.width,textSize())
+        // fill("#4CFF00")
         // image(woodFrame,STYLE.orchard.x, STYLE.orchard.y+textSize(), STYLE.orchard.width, STYLE.orchard.height - textSize())
-        rect(STYLE.orchard.x, STYLE.orchard.y+textSize(), STYLE.orchard.width, STYLE.orchard.height - textSize())
+        // rect(STYLE.orchard.x, STYLE.orchard.y+textSize(), STYLE.orchard.width, STYLE.orchard.height - textSize())
+
+        drawView(STYLE.orchard.x, STYLE.orchard.y, STYLE.orchard.width, STYLE.orchard.height)
+
+
         fill(255,245,144)
         text("ORCHARD", STYLE.orchard.y+STYLE.orchard.width/2, textSize())
         for (const treeSpot of this.treeSpots) {
@@ -20,21 +24,25 @@ class Orchard {
         }
     }
     fillTreeSpots() {
-        let startX=STYLE.orchard.x+STYLE.margin*1.5
-        let startY=STYLE.orchard.y+textSize()+STYLE.margin
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
+        let startX = STYLE.orchard.x + STYLE.margin * 1.5
+        let startY = STYLE.orchard.y + textSize() + STYLE.margin
+        let spotSize = STYLE.treeSpotSize
+        let orchardWidth = STYLE.orchard.width
+        let orchardHeight = STYLE.orchard.height
+        for (let i = 0; i < orchardHeight / spotSize - 1; i++) {
+            for (let j = 0; j < orchardWidth / spotSize - 1; j++) {
                 this.treeSpots.push(
-                new TreeSpot(
-                    startX+(j*(STYLE.treeSpotSize+STYLE.margin*2)),
-                    startY+(i*(STYLE.treeSpotSize+STYLE.margin))
-                ))
+                    new TreeSpot(
+                        startX + (j * (STYLE.treeSpotSize + STYLE.margin * 2)),
+                        startY + (i * (STYLE.treeSpotSize + STYLE.margin))
+                    ))
             }
         }
     }
     onClick(){
     }
     isClicked(){
+        this.onClick()
         for (const treeSpot of this.treeSpots) {
             treeSpot.isClicked()
         }

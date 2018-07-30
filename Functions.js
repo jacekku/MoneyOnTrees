@@ -53,9 +53,14 @@ function loadAllImages() {
         cherry_harvested: loadImage   ('assets/trees/cherry/cherry_harvested.png'),
 
 
+        settings: loadImage('assets/settings.png'),
+        reset: loadImage('assets/reset.png'),
+        sound: loadImage('assets/sound.png'),
+
 
         coinImage: loadImage('assets/coin.png'),
         shopImage: loadImage('assets/shop.png'),
+        workshopImage: loadImage('assets/workshop.png'),
         groundImage: loadImage('assets/ground.png'),
         plankBackgroundImage: loadImage('assets/plankBackground.png'),
         woodFrame: loadImage('assets/woodFrame.png'),
@@ -66,6 +71,35 @@ function loadAllImages() {
     }
 }
 
+
+let buttons={
+    harvestButton:{},
+    shopButton:{},
+    workshopButton:{}
+}
+function setupButtons() {
+    buttons.harvestButton = new Button(STYLE.buttonX, STYLE.buttonY);
+    buttons.harvestButton.setImage(images.harvestImage);
+    buttons.harvestButton.setOnClick(function () {
+        mouseObject.setAction(Actions.HARVEST);
+        openView("orchard");
+    });
+    buttons.shopButton = new Button(STYLE.buttonX + STYLE.margin + STYLE.buttonSize, STYLE.buttonY);
+    buttons.shopButton.setImage(images.shopImage);
+    buttons.shopButton.setOnClick(function () {
+        openView("shop");
+    });
+    buttons.workshopButton = new Button(STYLE.buttonX + STYLE.margin * 2 + STYLE.buttonSize * 2, STYLE.buttonY);
+    buttons.workshopButton.setImage(images.workshopImage);
+    buttons.workshopButton.setOnClick(function () {
+        openView("workshop");
+    });
+    buttons.settingsButton = new Button(STYLE.buttonX + STYLE.margin * 10 + STYLE.buttonSize * 10, STYLE.buttonY);
+    buttons.settingsButton.setImage(images.settings);
+    buttons.settingsButton.setOnClick(function () {
+        openView("settings");
+    });
+}
 
 
 
@@ -88,10 +122,7 @@ function setupActions() {
     };
     return Actions
 }
-let buttons={
-    harvestButton:{},
-    shopButton:{}
-}
+
 
 
 const STYLE = {
@@ -101,6 +132,7 @@ const STYLE = {
     buttonX: 10,
     buttonY: 620,
     treeSpotSize: undefined,
+    itemInShopSize:undefined,
     orchard: {
         x: 10,
         y: 10,
@@ -216,4 +248,23 @@ function hardResetGame() {
     loadGame("mainSave")
     orchard=new Orchard()
     inventory=new Inventory(...items.iterator)
+}
+
+let views={
+    orchard:true,
+    workshop:false,
+    shop:false,
+    settings:false
+}
+function drawView(x,y,w,h){
+    image(images.plankBackgroundImage,x, y,w+1,textSize()+1)
+    image(images.woodFrame,x,y+textSize()+1,w,h-textSize()-1)
+}
+
+function openView(viewToOpen){
+    for(let view in views){
+        views[view]=false
+        
+    }
+    views[viewToOpen]=true
 }

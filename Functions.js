@@ -72,6 +72,35 @@ function loadAllImages() {
 }
 
 
+let buttons={
+    harvestButton:{},
+    shopButton:{},
+    workshopButton:{}
+}
+function setupButtons() {
+    buttons.harvestButton = new Button(STYLE.buttonX, STYLE.buttonY);
+    buttons.harvestButton.setImage(images.harvestImage);
+    buttons.harvestButton.setOnClick(function () {
+        mouseObject.setAction(Actions.HARVEST);
+        openView("orchard");
+    });
+    buttons.shopButton = new Button(STYLE.buttonX + STYLE.margin + STYLE.buttonSize, STYLE.buttonY);
+    buttons.shopButton.setImage(images.shopImage);
+    buttons.shopButton.setOnClick(function () {
+        openView("shop");
+    });
+    buttons.workshopButton = new Button(STYLE.buttonX + STYLE.margin * 2 + STYLE.buttonSize * 2, STYLE.buttonY);
+    buttons.workshopButton.setImage(images.workshopImage);
+    buttons.workshopButton.setOnClick(function () {
+        openView("workshop");
+    });
+    buttons.settingsButton = new Button(STYLE.buttonX + STYLE.margin * 10 + STYLE.buttonSize * 10, STYLE.buttonY);
+    buttons.settingsButton.setImage(images.settings);
+    buttons.settingsButton.setOnClick(function () {
+        openView("settings");
+    });
+}
+
 
 
 function setupActions() {
@@ -93,11 +122,7 @@ function setupActions() {
     };
     return Actions
 }
-let buttons={
-    harvestButton:{},
-    shopButton:{},
-    workshopButton:{}
-}
+
 
 
 const STYLE = {
@@ -107,6 +132,7 @@ const STYLE = {
     buttonX: 10,
     buttonY: 620,
     treeSpotSize: undefined,
+    itemInShopSize:undefined,
     orchard: {
         x: 10,
         y: 10,
@@ -224,7 +250,12 @@ function hardResetGame() {
     inventory=new Inventory(...items.iterator)
 }
 
-
+let views={
+    orchard:true,
+    workshop:false,
+    shop:false,
+    settings:false
+}
 function drawView(x,y,w,h){
     image(images.plankBackgroundImage,x, y,w+1,textSize()+1)
     image(images.woodFrame,x,y+textSize()+1,w,h-textSize()-1)

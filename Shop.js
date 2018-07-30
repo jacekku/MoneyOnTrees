@@ -7,9 +7,9 @@ class Shop{
         this.items=[
             items.oak_saplings
             ,items.oak_log
+            ,items.oak_plank
             ,items.pine_saplings
             ,items.pine_log
-            ,items.oak_plank
             ,items.pine_plank
             ]
     }
@@ -27,8 +27,8 @@ class Shop{
         for(const item of this.items){
             let x=(index%4)
             let y=((index-x)/4)
-            x=x+this.x+STYLE.margin + (x*(STYLE.treeSpotSize+STYLE.margin*5))
-            y=y+this.y+tSize+STYLE.margin + (y*(STYLE.treeSpotSize+STYLE.margin))
+            x=x+this.x+STYLE.margin + (x*(STYLE.itemInShopSize+STYLE.margin*5))
+            y=y+this.y+tSize+STYLE.margin + (y*(STYLE.itemInShopSize+STYLE.margin))
 
             item.setShopButtons(x,y)
             

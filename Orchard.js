@@ -24,21 +24,25 @@ class Orchard {
         }
     }
     fillTreeSpots() {
-        let startX=STYLE.orchard.x+STYLE.margin*1.5
-        let startY=STYLE.orchard.y+textSize()+STYLE.margin
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
+        let startX = STYLE.orchard.x + STYLE.margin * 1.5
+        let startY = STYLE.orchard.y + textSize() + STYLE.margin
+        let spotSize = STYLE.treeSpotSize
+        let orchardWidth = STYLE.orchard.width
+        let orchardHeight = STYLE.orchard.height
+        for (let i = 0; i < orchardHeight / spotSize - 1; i++) {
+            for (let j = 0; j < orchardWidth / spotSize - 1; j++) {
                 this.treeSpots.push(
-                new TreeSpot(
-                    startX+(j*(STYLE.treeSpotSize+STYLE.margin*2)),
-                    startY+(i*(STYLE.treeSpotSize+STYLE.margin))
-                ))
+                    new TreeSpot(
+                        startX + (j * (STYLE.treeSpotSize + STYLE.margin * 2)),
+                        startY + (i * (STYLE.treeSpotSize + STYLE.margin))
+                    ))
             }
         }
     }
     onClick(){
     }
     isClicked(){
+        this.onClick()
         for (const treeSpot of this.treeSpots) {
             treeSpot.isClicked()
         }

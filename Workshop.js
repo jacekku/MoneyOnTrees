@@ -19,7 +19,7 @@ class Workshop{
         this.setButtons()
     }
     setButtons(){
-        let spotSize = STYLE.treeSpotSize
+        let spotSize = STYLE.itemInShopSize
         let startingX=this.x+(STYLE.margin)
         let startingY=this.y+(STYLE.margin)+textSize()
         this.items["Oak Planks"].buttons.push(new Button(startingX,startingY,spotSize,spotSize))
@@ -29,7 +29,7 @@ class Workshop{
         drawView(this.x,this.y,this.w,this.h)
         fill(255,245,144)
         text("Workshop",this.x+this.w/2,textSize())
-        let spotSize = STYLE.treeSpotSize
+        let spotSize = STYLE.itemInShopSize
         let startingX=this.x+(STYLE.margin)
         let startingY=this.y+(STYLE.margin)+textSize()
 

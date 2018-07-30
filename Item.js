@@ -112,7 +112,7 @@ class Item {
     }
     showInShop(x, y) {
         fill(255)
-        let spotSize = STYLE.treeSpotSize
+        let spotSize = STYLE.itemInShopSize
         let itemSize = STYLE.itemHeightInInventory
         rect(x, y, spotSize, itemSize+textSize())
         imageMode(CENTER)
@@ -140,7 +140,7 @@ class Item {
     }
     setShopButtons(x, y) {
         let itemSize = STYLE.itemHeightInInventory + textSize()
-        let spotSize = STYLE.treeSpotSize
+        let spotSize = STYLE.itemInShopSize
         let middleX = (spotSize / 2)
 
         this.setButton(new Button(x, y + itemSize, spotSize / 2, spotSize - itemSize), "buy")

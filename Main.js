@@ -5,12 +5,7 @@ tickCounter = 0
 
 let mouseObject
 let orchard, inventory,  money, oak_saplings, shop
-let views={
-    orchard:true,
-    workshop:false,
-    shop:false,
-    settings:false
-}
+
 
 let Actions
 function preload() {
@@ -32,45 +27,23 @@ function setup() {
    
     STYLE.buttonSize = height - (STYLE.orchard.height + 3 * STYLE.margin)
     STYLE.orchard.viewY += STYLE.textSize + STYLE.margin
-    STYLE.treeSpotSize = (STYLE.orchard.height-textSize()-(STYLE.margin*4))/3
+
+    STYLE.itemInShopSize = (STYLE.orchard.height-textSize()-(STYLE.margin*4))/3
+    STYLE.treeSpotSize = 100
+    
     STYLE.inventory.width = width - 620 - 10
     if(!orchard)orchard = new Orchard()
     inventory = new Inventory()
     shop = new Shop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     workshop = new Workshop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     settings=new Settings()
-    inventory.items.push(items.money)
-    inventory.items.push(items.oak_saplings)
-    inventory.items.push(items.oak_log)
-    inventory.items.push(items.oak_plank)
 
-
-
-    buttons.harvestButton = new Button(STYLE.buttonX, STYLE.buttonY)
-    buttons.harvestButton.setImage(images.harvestImage)
-    buttons.harvestButton.setOnClick(function () {
-        mouseObject.setAction(Actions.HARVEST)
-        openView("orchard")
-    })
-    buttons.shopButton = new Button(STYLE.buttonX + STYLE.margin + STYLE.buttonSize, STYLE.buttonY)
-    buttons.shopButton.setImage(images.shopImage)
-    buttons.shopButton.setOnClick(function () {
-        openView("shop")
-    })
-    buttons.workshopButton = new Button(STYLE.buttonX + STYLE.margin*2 + STYLE.buttonSize*2, STYLE.buttonY)
-    buttons.workshopButton.setImage(images.workshopImage)
-    buttons.workshopButton.setOnClick(function () {
-        openView("workshop")
-        
-    })
-    buttons.settingsButton = new Button(STYLE.buttonX + STYLE.margin*10 + STYLE.buttonSize*10, STYLE.buttonY)
-    buttons.settingsButton.setImage(images.settings)
-    buttons.settingsButton.setOnClick(function () {
-        openView("settings")
-    })
+    setupButtons();
 
 
     loadGame(mainSave)
+
+
 }
 
 function draw() {
@@ -90,6 +63,11 @@ function draw() {
         }
 
     }
+    
+
+
+
+
     for(const button in buttons){
         buttons[button].show()
     }
@@ -122,7 +100,6 @@ function mouseClicked() {
 }
 function tick(){
     orchard.tick()
-    inventory.tick()
     mouseObject.tick()
     tickCounter++
 }

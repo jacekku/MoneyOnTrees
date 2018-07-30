@@ -10,6 +10,7 @@ class Item {
         this.button
         this.buyButton
         this.sellButton
+        this.sellAllButton
         this.setupAction(action)
     }
     setupAction(action){
@@ -27,7 +28,7 @@ class Item {
     }
     subtractAmount(amount) {
         if (this.amount-amount == 0) {
-            if(this.action && mouseObject.action.id == this.action.id) mouseObject.setAction(Actions.NOTHING)
+            if(this.action) mouseObject.setAction(Actions.NOTHING)
             return this.addAmount(-amount)
         }
         if (this.amount-amount < 0) return false
@@ -44,6 +45,9 @@ class Item {
                 break;
             case "sell":
                 this.sellButton = button
+                break
+            case "sellAll":
+                this.sellAllButton = button
                 break
             case "buy":
                 this.buyButton = button
@@ -71,14 +75,16 @@ class Item {
 
     onClick(buttonID=0) {
         if(buttonID==0){
-            mouseObject.setAction(this.action)
-            
+            if(views.orchard)mouseObject.setAction(this.action)
         }
         else if(buttonID==1){
             this.buyItem()
         }
         else if(buttonID==2){
             this.sellItem()
+        }
+        else if(buttonID==3){
+            this.sellItem(this.amount)
         }
     }
     isClicked() {
@@ -94,6 +100,9 @@ class Item {
         }
         if (this.sellButton && this.sellButton.isClicked()) {
             this.onClick(2)
+        }
+        if (this.sellAllButton && this.sellAllButton.isClicked()) {
+            this.onClick(3)
         }
          else return false
     }
@@ -112,7 +121,7 @@ class Item {
     }
     showInShop(x, y) {
         fill(255)
-        let spotSize = STYLE.treeSpotSize
+        let spotSize = STYLE.itemInShopSize
         let itemSize = STYLE.itemHeightInInventory
         rect(x, y, spotSize, itemSize+textSize())
         imageMode(CENTER)
@@ -135,19 +144,27 @@ class Item {
         let getItem=inventory.getItemByName(this.name)||{amount:0}
         text(getItem.amount,pos.x,pos.y+textSize()*2)
 
+        pos=this.sellAllButton.show(color(255,0,0))
+        fill(0)
+        push()
+        textAlign(LEFT,TOP)
+        text("SELL ALL",pos.x,pos.y)
+        pop()
+        
         text(this.name, x + spotSize / 2, y + itemSize + textSize() / 2)
 
     }
     setShopButtons(x, y) {
         let itemSize = STYLE.itemHeightInInventory + textSize()
-        let spotSize = STYLE.treeSpotSize
+        let spotSize = STYLE.itemInShopSize
         let middleX = (spotSize / 2)
 
         this.setButton(new Button(x, y + itemSize, spotSize / 2, spotSize - itemSize), "buy")
         if(this.buyPrice==0)this.buyButton.setImage(images.notBuyButtonImage)
         else this.buyButton.setImage(images.buyButtonImage)
-        this.setButton(new Button(x + middleX, y + itemSize, spotSize / 2, spotSize - itemSize), "sell")
+        this.setButton(new Button(x + middleX, y + itemSize, spotSize / 2, spotSize - itemSize-textSize()), "sell")
         this.sellButton.setImage(images.sellButtonImage)
-
+        this.setButton(new Button(x + middleX, y + itemSize +spotSize - itemSize-textSize(), spotSize / 2, textSize()), "sellAll")
+        this.sellAllButton.setImage(images.sellButtonImage)
     }
 }

@@ -5,8 +5,11 @@ class Inventory {
     }
     show() {
         let bound = STYLE.inventory
-        image(images.plankBackgroundImage,bound.x, bound.y,bound.width,textSize())
-        image(images.woodFrame,bound.x, bound.y + textSize(), bound.width, bound.height - textSize())
+        // image(images.plankBackgroundImage,bound.x, bound.y,bound.width,textSize())
+        // image(images.woodFrame,bound.x, bound.y + textSize(), bound.width, bound.height - textSize())
+
+        drawView(bound.x, bound.y, bound.width, bound.height)
+
         fill(255,245,144)
         text("INVENTORY", bound.x + bound.width / 2, textSize())
 
@@ -22,9 +25,6 @@ class Inventory {
             }
         }
         pop()
-    }
-    tick() {
-        this.updateItems()
     }
 
 
@@ -51,14 +51,6 @@ class Inventory {
                 item.setButton(null)
             }
         }
-    }
-    updateItems() {
-        for (const item of this.items) {
-            //    if (item.amount == 0) {
-            //     this.items.splice(this.items.indexOf(item), 1)
-            //    }
-        }
-
     }
     getItemByName(name){
         for (const item of this.items) {

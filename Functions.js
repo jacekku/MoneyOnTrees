@@ -18,16 +18,17 @@ function catchUpOnTicks(leftPageAt){
 
 
 leftPageAt = Date.now()
+let mainSave="mainSave"
 document.onvisibilitychange = function () {
     if (document.visibilityState == "hidden") {
         leftPageAt = Date.now()
-        saveGame()
+        saveGame(mainSave)
     } else {
         catchUpOnTicks(leftPageAt)
     }
 }
 window.addEventListener("unload", () => {
-   saveGame()
+   saveGame(mainSave)
 })
 
 
@@ -52,9 +53,14 @@ function loadAllImages() {
         cherry_harvested: loadImage   ('assets/trees/cherry/cherry_harvested.png'),
 
 
+        settings: loadImage('assets/settings.png'),
+        reset: loadImage('assets/reset.png'),
+        sound: loadImage('assets/sound.png'),
+
 
         coinImage: loadImage('assets/coin.png'),
         shopImage: loadImage('assets/shop.png'),
+        workshopImage: loadImage('assets/workshop.png'),
         groundImage: loadImage('assets/ground.png'),
         plankBackgroundImage: loadImage('assets/plankBackground.png'),
         woodFrame: loadImage('assets/woodFrame.png'),
@@ -65,6 +71,35 @@ function loadAllImages() {
     }
 }
 
+
+let buttons={
+    harvestButton:{},
+    shopButton:{},
+    workshopButton:{}
+}
+function setupButtons() {
+    buttons.harvestButton = new Button(STYLE.buttonX, STYLE.buttonY);
+    buttons.harvestButton.setImage(images.harvestImage);
+    buttons.harvestButton.setOnClick(function () {
+        mouseObject.setAction(Actions.HARVEST);
+        openView("orchard");
+    });
+    buttons.shopButton = new Button(STYLE.buttonX + STYLE.margin + STYLE.buttonSize, STYLE.buttonY);
+    buttons.shopButton.setImage(images.shopImage);
+    buttons.shopButton.setOnClick(function () {
+        openView("shop");
+    });
+    buttons.workshopButton = new Button(STYLE.buttonX + STYLE.margin * 2 + STYLE.buttonSize * 2, STYLE.buttonY);
+    buttons.workshopButton.setImage(images.workshopImage);
+    buttons.workshopButton.setOnClick(function () {
+        openView("workshop");
+    });
+    buttons.settingsButton = new Button(STYLE.buttonX + STYLE.margin * 10 + STYLE.buttonSize * 10, STYLE.buttonY);
+    buttons.settingsButton.setImage(images.settings);
+    buttons.settingsButton.setOnClick(function () {
+        openView("settings");
+    });
+}
 
 
 
@@ -87,10 +122,7 @@ function setupActions() {
     };
     return Actions
 }
-let buttons={
-    harvestButton:{},
-    shopButton:{}
-}
+
 
 
 const STYLE = {
@@ -100,6 +132,7 @@ const STYLE = {
     buttonX: 10,
     buttonY: 620,
     treeSpotSize: undefined,
+    itemInShopSize:undefined,
     orchard: {
         x: 10,
         y: 10,
@@ -160,7 +193,11 @@ function recastObject(item, className) {
  * 
  */
 
-function saveGame() {
+function saveGame(saveName) {
+    if(saveName!=mainSave){
+        console.log("\n\nSAVE NAME CHANGED TO "+saveName+"\n\n")
+        mainSave=saveName
+    }
     let saveObject = {
         tickCounter,
         itemsAmounts:getAmounts(),
@@ -169,23 +206,27 @@ function saveGame() {
         gameVersion,
         resetAfterUpdate
     }
-    console.log("saving", saveObject)
-    localStorage.setObject("saveFile", saveObject)
+    console.log("saving "+saveName, saveObject)
+    localStorage.setObject(saveName, saveObject)
 }
 
 
 
-function loadGame() {
-    let saveObject = localStorage.getObject("saveFile")
+function loadGame(saveName) {
+    let saveObject = localStorage.getObject(saveName)
     if (saveObject == null) {
-        saveGame()
+        saveGame(saveName)
     } else {
-        console.log("loading",saveObject)
+        console.log("loading "+saveName,saveObject)
+        orchard=new Orchard()
+
         tickCounter = saveObject.tickCounter
         setAmounts(saveObject.itemsAmounts)
         orchard.setTreeSpotStates(saveObject.treeSpotStates)
         leftPageAt=saveObject.leftPageAt
-        catchUpOnTicks(leftPageAt)
+        
+        if(saveName=="mainSave")catchUpOnTicks(leftPageAt)
+        
         inventory=new Inventory(...items.iterator)
         if(saveObject.gameVersion==null || saveObject.gameVersion<gameVersion){
             console.error(`Game is out of date current version:${saveObject.gameVersion} update version:${gameVersion}`)
@@ -203,8 +244,27 @@ function hardResetGame() {
     localStorage.clear()
     items=setupItems()
     tickCounter=0
-    saveGame()
-    loadGame()
+    saveGame("mainSave")
+    loadGame("mainSave")
     orchard=new Orchard()
     inventory=new Inventory(...items.iterator)
+}
+
+let views={
+    orchard:true,
+    workshop:false,
+    shop:false,
+    settings:false
+}
+function drawView(x,y,w,h){
+    image(images.plankBackgroundImage,x, y,w+1,textSize()+1)
+    image(images.woodFrame,x,y+textSize()+1,w,h-textSize()-1)
+}
+
+function openView(viewToOpen){
+    for(let view in views){
+        views[view]=false
+        
+    }
+    views[viewToOpen]=true
 }

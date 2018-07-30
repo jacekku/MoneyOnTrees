@@ -27,7 +27,7 @@ class Item {
     }
     subtractAmount(amount) {
         if (this.amount-amount == 0) {
-            if(this.action && mouseObject.action.id == this.action.id) mouseObject.setAction(Actions.NOTHING)
+            if(this.action) mouseObject.setAction(Actions.NOTHING)
             return this.addAmount(-amount)
         }
         if (this.amount-amount < 0) return false

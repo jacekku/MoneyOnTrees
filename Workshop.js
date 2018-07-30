@@ -33,6 +33,7 @@ class Workshop{
         let startingX=this.x+(STYLE.margin)
         let startingY=this.y+(STYLE.margin)+textSize()
         this.items["Oak Planks"].buttons.push(new Button(startingX,startingY,spotSize,spotSize))
+        this.items["Pine Planks"].buttons.push(new Button(startingX + spotSize+STYLE.margin,startingY,spotSize,spotSize))
     }
 
     show(){

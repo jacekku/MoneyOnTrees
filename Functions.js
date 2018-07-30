@@ -193,8 +193,8 @@ function recastObject(item, className) {
  * 
  */
 
-function saveGame(saveName) {
-    if(saveName!=mainSave){
+function saveGame(saveName,setMainSave) {
+    if(setMainSave && saveName!=mainSave){
         console.log("\n\nSAVE NAME CHANGED TO "+saveName+"\n\n")
         mainSave=saveName
     }
@@ -233,7 +233,7 @@ function loadGame(saveName) {
             if(resetAfterUpdate){
                 console.log("RESETING")
                 console.log("saving oldSave",saveObject)
-                localStorage.setObject("oldSave",saveObject)
+                saveGame("oldSave",false)
                 hardResetGame()
             }
         }

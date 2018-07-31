@@ -59,8 +59,13 @@ function loadAllImages() {
 
 
         coinImage: loadImage('assets/coin.png'),
+
         shopImage: loadImage('assets/shop.png'),
         workshopImage: loadImage('assets/workshop.png'),
+
+        upgrades: loadImage('assets/workshop.png'),
+
+
         groundImage: loadImage('assets/ground.png'),
         plankBackgroundImage: loadImage('assets/plankBackground.png'),
         woodFrame: loadImage('assets/woodFrame.png'),
@@ -75,7 +80,8 @@ function loadAllImages() {
 let buttons={
     harvestButton:{},
     shopButton:{},
-    workshopButton:{}
+    workshopButton:{},
+    upgradesButton:{}
 }
 function setupButtons() {
     buttons.harvestButton = new Button(STYLE.buttonX, STYLE.buttonY);
@@ -98,6 +104,11 @@ function setupButtons() {
     buttons.settingsButton.setImage(images.settings);
     buttons.settingsButton.setOnClick(function () {
         openView("settings");
+    });
+    buttons.upgradesButton = new Button(STYLE.buttonX + STYLE.margin * 3 + STYLE.buttonSize * 3, STYLE.buttonY);
+    buttons.upgradesButton.setImage(images.upgrades);
+    buttons.upgradesButton.setOnClick(function () {
+        openView("upgrades");
     });
 }
 
@@ -254,11 +265,14 @@ let views={
     orchard:true,
     workshop:false,
     shop:false,
-    settings:false
+    settings:false,
+    upgrades:false
 }
-function drawView(x,y,w,h){
+function drawView(x,y,w,h,viewTitle){
     image(images.plankBackgroundImage,x, y,w+1,textSize()+1)
     image(images.woodFrame,x,y+textSize()+1,w,h-textSize()-1)
+    fill(255,245,144)
+    text(viewTitle,x+w/2,textSize())
 }
 
 function openView(viewToOpen){

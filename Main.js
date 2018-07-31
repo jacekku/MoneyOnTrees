@@ -35,8 +35,8 @@ function setup() {
     if(!orchard)orchard = new Orchard()
     inventory = new Inventory()
     shop = new Shop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
-  
     workshop = new Workshop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
+    upgrades = new Upgrades(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     settings=new Settings()
 
     setupButtons();
@@ -50,6 +50,9 @@ function draw() {
     }
     else if (views.workshop) {
         workshop.show()
+    }
+    else if (views.upgrades) {
+        upgrades.show()
     }
     else {
         orchard.show()

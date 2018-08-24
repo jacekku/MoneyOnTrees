@@ -9,11 +9,7 @@ class Orchard {
         // image(woodFrame,STYLE.orchard.x, STYLE.orchard.y+textSize(), STYLE.orchard.width, STYLE.orchard.height - textSize())
         // rect(STYLE.orchard.x, STYLE.orchard.y+textSize(), STYLE.orchard.width, STYLE.orchard.height - textSize())
 
-        drawView(STYLE.orchard.x, STYLE.orchard.y, STYLE.orchard.width, STYLE.orchard.height)
-
-
-        fill(255,245,144)
-        text("ORCHARD", STYLE.orchard.y+STYLE.orchard.width/2, textSize())
+        drawView(STYLE.orchard.x, STYLE.orchard.y, STYLE.orchard.width, STYLE.orchard.height,"ORCHARD")
         for (const treeSpot of this.treeSpots) {
             treeSpot.show()
         }

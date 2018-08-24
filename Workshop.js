@@ -37,9 +37,7 @@ class Workshop{
     }
 
     show(){
-        drawView(this.x,this.y,this.w,this.h)
-        fill(255,245,144)
-        text("Workshop",this.x+this.w/2,textSize())
+        drawView(this.x,this.y,this.w,this.h,"WORKSHOP")
         let spotSize = STYLE.itemInShopSize
         let startingX=this.x+(STYLE.margin)
         let startingY=this.y+(STYLE.margin)+textSize()

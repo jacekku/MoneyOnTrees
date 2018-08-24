@@ -16,9 +16,7 @@ class Settings {
     show() {
 
         let bound = STYLE.inventory
-        drawView(bound.x, bound.y, bound.width, bound.height)
-        fill(255, 245, 144)
-        text("SETTINGS", bound.x + bound.width / 2, textSize())
+        drawView(bound.x, bound.y, bound.width, bound.height,"SETTINGS")
 
         //show options
         push()

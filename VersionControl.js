@@ -1,2 +1,2 @@
-let gameVersion=0.5
-let resetAfterUpdate=true
+let gameVersion=0.6
+let resetAfterUpdate=false

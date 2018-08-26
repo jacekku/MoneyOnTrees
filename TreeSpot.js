@@ -42,11 +42,11 @@ class TreeSpot {
 
     onClick() {
         if (!this.tree && mouseObject.action.id == Actions.PLANT.id) {
-            mouseObject.startAction(this,this.plantTree,1000,mouseObject.action.plantType)
+            mouseObject.startAction(this,this.plantTree,1000,mouseObject.action.plantType)//HARDCODE
         } else if (this.tree.canHarvest() && mouseObject.action.id == Actions.HARVEST.id) {
-            mouseObject.startAction(this,this.harvestTree,2500)
-        }else if(this.tree.canSell() && mouseObject.action.id == Actions.HARVEST.id){
-            mouseObject.startAction(this,this.sellTree,5000)
+            mouseObject.startAction(this,this.harvestTree,2500)//HARDCODE
+        }else if(this.tree.canChop() && mouseObject.action.id == Actions.CHOPDOWN.id){
+            mouseObject.startAction(this,this.sellTree,5000)//HARDCODE
         }
 
     }
@@ -55,7 +55,7 @@ class TreeSpot {
         items[type+"_saplings"].subtractAmount(1)
     }
     sellTree() {
-        this.tree.sellItem.addAmount(1)
+        this.tree.chopItem.addAmount(1)
         this.tree = null
     }
     harvestTree(){

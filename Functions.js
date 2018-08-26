@@ -72,7 +72,8 @@ function loadAllImages() {
         buyButtonImage: loadImage('assets/buyButton.png'),
         notBuyButtonImage: loadImage('assets/notBuyButton.png'),
         sellButtonImage: loadImage('assets/sellButton.png'),
-        harvestImage: loadImage('assets/harvest.png')
+        harvestImage: loadImage('assets/harvest.png'),
+        chopDownImage: loadImage('assets/chop.png'),
     }
 }
 
@@ -81,7 +82,8 @@ let buttons={
     harvestButton:{},
     shopButton:{},
     workshopButton:{},
-    upgradesButton:{}
+    upgradesButton:{},
+    chopDownButton:{},
 }
 function setupButtons() {
     buttons.harvestButton = new Button(STYLE.buttonX, STYLE.buttonY);
@@ -90,25 +92,31 @@ function setupButtons() {
         mouseObject.setAction(Actions.HARVEST);
         openView("orchard");
     });
-    buttons.shopButton = new Button(STYLE.buttonX + STYLE.margin + STYLE.buttonSize, STYLE.buttonY);
+    buttons.chopDownButton = new Button(STYLE.buttonX + STYLE.margin * 1 + STYLE.buttonSize * 1, STYLE.buttonY);
+    buttons.chopDownButton.setImage(images.chopDownImage);
+    buttons.chopDownButton.setOnClick(function () {
+        mouseObject.setAction(Actions.CHOPDOWN);
+        openView("orchard");
+    });
+    buttons.shopButton = new Button(STYLE.buttonX + STYLE.margin * 2 + STYLE.buttonSize * 2, STYLE.buttonY);
     buttons.shopButton.setImage(images.shopImage);
     buttons.shopButton.setOnClick(function () {
         openView("shop");
     });
-    buttons.workshopButton = new Button(STYLE.buttonX + STYLE.margin * 2 + STYLE.buttonSize * 2, STYLE.buttonY);
+    buttons.workshopButton = new Button(STYLE.buttonX + STYLE.margin * 3 + STYLE.buttonSize * 3, STYLE.buttonY);
     buttons.workshopButton.setImage(images.workshopImage);
     buttons.workshopButton.setOnClick(function () {
         openView("workshop");
+    });
+    buttons.upgradesButton = new Button(STYLE.buttonX + STYLE.margin * 4 + STYLE.buttonSize * 4, STYLE.buttonY);
+    buttons.upgradesButton.setImage(images.upgrades);
+    buttons.upgradesButton.setOnClick(function () {
+        openView("upgrades");
     });
     buttons.settingsButton = new Button(STYLE.buttonX + STYLE.margin * 10 + STYLE.buttonSize * 10, STYLE.buttonY);
     buttons.settingsButton.setImage(images.settings);
     buttons.settingsButton.setOnClick(function () {
         openView("settings");
-    });
-    buttons.upgradesButton = new Button(STYLE.buttonX + STYLE.margin * 3 + STYLE.buttonSize * 3, STYLE.buttonY);
-    buttons.upgradesButton.setImage(images.upgrades);
-    buttons.upgradesButton.setOnClick(function () {
-        openView("upgrades");
     });
 }
 
@@ -128,6 +136,10 @@ function setupActions() {
             id: 2,
             image: null,
             plantType:null
+        },
+        CHOPDOWN:{
+            id:3,
+            image:images.chopDownImage
         },
         
     };

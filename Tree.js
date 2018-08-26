@@ -1,17 +1,17 @@
 class Tree {
-    constructor(spot, type, growthStage = 0, growthCounter = 0, growthThreshold = 200) {
+    constructor(spot, type, growthStage = 0, growthCounter = 0, growthThreshold = 200) {//HARDCODE
         this.spot = spot
         this.type = type
         this.growthStage = growthStage
         this.growthCounter = growthCounter
-        this.growthThreshold = growthThreshold
+        this.growthThreshold = debugMode?10:growthThreshold
         this.maxGrowthStage = 14
-        this.sellItem=treeItems[this.type].sellItem
+        this.chopItem=treeItems[this.type].chopItem
         this.harvestItem=treeItems[this.type].harvestItem
         this.harvested = false
     }
     show() {
-        let stageSize = 200
+        let stageSize = 200//HARDCODE
         image(images[this.type + "_sheet"], this.spot.x, this.spot.y, STYLE.treeSpotSize, STYLE.treeSpotSize, this.growthStage * stageSize, 0, stageSize, stageSize)
     }
     tick() {
@@ -38,7 +38,7 @@ class Tree {
         this.maxGrowthStage = state.maxGrowthStage
     }
 
-    canSell() {
+    canChop() {
         return this.maxGrowthStage === this.growthStage && (this.harvestItem?this.harvested:true)
     }
     canHarvest() {

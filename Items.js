@@ -22,15 +22,15 @@ function setupItems() {
     }
     treeItems={
         oak:{
-            sellItem:items.oak_log,
+            chopItem:items.oak_log,
             harvestItem:null
         },
         pine:{
-            sellItem:items.pine_log,
+            chopItem:items.pine_log,
             harvestItem:null
         },
         cherry:{
-            sellItem:items.cherry_log,
+            chopItem:items.cherry_log,
             harvestItem:items.cherry_fruit
         }
     }

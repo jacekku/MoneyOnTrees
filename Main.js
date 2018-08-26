@@ -33,7 +33,6 @@ function setup() {
     
     STYLE.inventory.width = width - 620 - 10
     if(!orchard)orchard = new Orchard()
-    inventory = new Inventory()
     shop = new Shop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     workshop = new Workshop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     upgrades = new Upgrades(10, 10, width - 20, height - 30 - STYLE.buttonSize)

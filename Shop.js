@@ -11,6 +11,9 @@ class Shop{
             ,items.pine_saplings
             ,items.pine_log
             ,items.pine_plank
+            ,items.cherry_saplings
+            ,items.cherry_log
+            ,items.cherry_plank
             ]
     }
     show(){

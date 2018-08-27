@@ -14,6 +14,7 @@ class Shop{
             ,items.cherry_saplings
             ,items.cherry_log
             ,items.cherry_plank
+            ,items.cherry_fruit
             ]
     }
     show(){

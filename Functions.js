@@ -50,7 +50,6 @@ function loadAllImages() {
         cherry_log: loadImage     ('assets/trees/cherry/cherry_log.png'),
         cherry_plank: loadImage   ('assets/trees/cherry/cherry_plank.png'),
         cherry_fruit: loadImage   ('assets/trees/cherry/cherry_fruit.png'),
-        cherry_harvested: loadImage   ('assets/trees/cherry/cherry_harvested.png'),
 
 
         settings: loadImage('assets/settings.png'),

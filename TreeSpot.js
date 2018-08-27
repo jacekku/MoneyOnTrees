@@ -28,9 +28,12 @@ class TreeSpot {
     setState(state) {
         this.price = state.price
         if (state.tree) {
-            let tree=state.tree
-            if (this.tree) this.tree.setState(tree)
-            else this.tree = new Tree(this, tree.type, tree.growthStage, tree.growthCounter, tree.growthThreshhold)
+            let treeState=state.tree
+            if (this.tree) this.tree.setState(treeState)
+            else {
+                this.tree = new Tree(this, treeState.type)
+                this.tree.setState(treeState)
+            }
         }
     }
 
@@ -42,11 +45,11 @@ class TreeSpot {
 
     onClick() {
         if (!this.tree && mouseObject.action.id == Actions.PLANT.id) {
-            mouseObject.startAction(this,this.plantTree,1000,mouseObject.action.plantType)//HARDCODE
+            mouseObject.startAction(this,this.plantTree,100,mouseObject.action.plantType)//HARDCODE
         } else if (this.tree.canHarvest() && mouseObject.action.id == Actions.HARVEST.id) {
-            mouseObject.startAction(this,this.harvestTree,2500)//HARDCODE
+            mouseObject.startAction(this,this.harvestTree,100)//HARDCODE
         }else if(this.tree.canChop() && mouseObject.action.id == Actions.CHOPDOWN.id){
-            mouseObject.startAction(this,this.sellTree,5000)//HARDCODE
+            mouseObject.startAction(this,this.sellTree,100)//HARDCODE
         }
 
     }

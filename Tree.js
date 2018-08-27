@@ -4,7 +4,7 @@ class Tree {
         this.type = type
         this.growthStage = growthStage
         this.growthCounter = growthCounter
-        this.growthThreshold = debugMode?10:growthThreshold
+        this.growthThreshold = true?10:growthThreshold
         this.maxGrowthStage = 14
         this.chopItem=treeItems[this.type].chopItem
         this.harvestItem=treeItems[this.type].harvestItem
@@ -12,7 +12,9 @@ class Tree {
     }
     show() {
         let stageSize = 200//HARDCODE
-        image(images[this.type + "_sheet"], this.spot.x, this.spot.y, STYLE.treeSpotSize, STYLE.treeSpotSize, this.growthStage * stageSize, 0, stageSize, stageSize)
+        
+        if(!this.harvested)image(images[this.type + "_sheet"], this.spot.x, this.spot.y, STYLE.treeSpotSize, STYLE.treeSpotSize, this.growthStage * stageSize, 0, stageSize, stageSize)
+        else image(images[this.type + "_sheet"], this.spot.x, this.spot.y, STYLE.treeSpotSize, STYLE.treeSpotSize, (1+ this.growthStage) * stageSize, 0, stageSize, stageSize)
     }
     tick() {
         this.growthCounter++
@@ -27,7 +29,8 @@ class Tree {
             growthStage: this.growthStage,
             growthCounter: this.growthCounter,
             growthThreshold: this.growthThreshold,
-            maxGrowthStage: this.maxGrowthStage
+            maxGrowthStage: this.maxGrowthStage,
+            harvested: this.harvested
         }
     }
     setState(state) {
@@ -36,6 +39,8 @@ class Tree {
         this.growthCounter = state.growthCounter
         this.growthThreshold = state.growthThreshold
         this.maxGrowthStage = state.maxGrowthStage
+        this.harvested = state.harvested
+        
     }
 
     canChop() {

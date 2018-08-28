@@ -5,7 +5,7 @@ tickCounter = 0
 
 let mouseObject
 let orchard, inventory,  money, oak_saplings, shop
-let debugMode=true
+let debugMode=false
 
 let Actions
 function preload() {
@@ -77,7 +77,11 @@ function draw() {
     
     mouseObject.show()
 }
-
+function keyPressed(){
+    if(keyCode==109){
+        debugMode=!debugMode
+    }
+}
 function mouseClicked() {
     if (views.shop) {
         shop.isClicked()

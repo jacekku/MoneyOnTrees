@@ -4,7 +4,7 @@ class Tree {
         this.type = type
         this.growthStage = growthStage
         this.growthCounter = growthCounter
-        this.growthThreshold = true?10:growthThreshold
+        this.growthThreshold = debugMode?10:growthThreshold
         this.maxGrowthStage = 14
         this.chopItem=treeItems[this.type].chopItem
         this.harvestItem=treeItems[this.type].harvestItem

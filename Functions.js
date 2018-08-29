@@ -9,27 +9,7 @@ function mouseInsideRect(x, y, w, h) {
     return pointInsideRect(mouseX, mouseY, x, y, w, h)
 }
 
-function catchUpOnTicks(leftPageAt){
-    let missedTicks = Math.floor((Date.now() - leftPageAt) / newTickEveryMS)
-    for (let i = 0; i < missedTicks; i++) {
-        tick()
-    }
-}
 
-
-leftPageAt = Date.now()
-let mainSave="mainSave"
-document.onvisibilitychange = function () {
-    if (document.visibilityState == "hidden") {
-        leftPageAt = Date.now()
-        saveGame(mainSave)
-    } else {
-        catchUpOnTicks(leftPageAt)
-    }
-}
-window.addEventListener("unload", () => {
-   saveGame(mainSave)
-})
 
 
 
@@ -122,7 +102,7 @@ function setupButtons() {
 
 
 function setupActions() {
-    let Actions = {
+    return {
         NOTHING: {
             id: 0,
             image: null
@@ -140,9 +120,7 @@ function setupActions() {
             id:3,
             image:images.chopDownImage
         },
-        
     };
-    return Actions
 }
 
 
@@ -215,6 +193,28 @@ function recastObject(item, className) {
  * 
  */
 
+function catchUpOnTicks(leftPageAt){
+    let missedTicks = Math.floor((Date.now() - leftPageAt) / newTickEveryMS)
+    for (let i = 0; i < missedTicks; i++) {
+        tick()
+    }
+}
+
+
+leftPageAt = Date.now()
+let mainSave="mainSave"
+document.onvisibilitychange = function () {
+    if (document.visibilityState == "hidden") {
+        leftPageAt = Date.now()
+        saveGame(mainSave)
+    } else {
+        catchUpOnTicks(leftPageAt)
+    }
+}
+window.addEventListener("unload", () => {
+   saveGame(mainSave)
+})
+
 function saveGame(saveName,setMainSave) {
     if(setMainSave && saveName!=mainSave){
         console.log("\n\nSAVE NAME CHANGED TO "+saveName+"\n\n")
@@ -241,7 +241,6 @@ function loadGame(saveName) {
     } else {
         console.log("loading "+saveName,saveObject)
         orchard=new Orchard()
-
         tickCounter = saveObject.tickCounter
         setAmounts(saveObject.itemsAmounts)
         orchard.setTreeSpotStates(saveObject.treeSpotStates)

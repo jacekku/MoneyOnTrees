@@ -5,7 +5,7 @@ class Upgrades{
         this.width=w
         this.height=h
         this.availableUpgrades=[
-            "harvestSpeed","chopSpeed"
+            "harvestSpeed","chopSpeed","treeYield","fruitYield"
         ]
         this.upgradeCards=[]
     }

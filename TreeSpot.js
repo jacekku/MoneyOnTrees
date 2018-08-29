@@ -58,11 +58,11 @@ class TreeSpot {
         items[type+"_saplings"].subtractAmount(1)
     }
     sellTree() {
-        this.tree.chopItem.addAmount(1)
+        this.tree.chopItem.addAmount(actionTimes.treeYield.actualSpeed)
         this.tree = null
     }
     harvestTree(){
-        this.tree.harvestItem.addAmount(1)
+        this.tree.harvestItem.addAmount(actionTimes.fruitYield.actualSpeed)
         this.tree.harvested=true
     }
 }

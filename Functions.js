@@ -102,8 +102,8 @@ function setupButtons() {
 function setupActionTimes(){
     let times={
         plantSpeed:{base:100,level:1,upgradePerLevel:1},
-        harvestSpeed:{base:2500,level:20,upgradePerLevel:0.9},
-        chopSpeed:{base:5000,level:20,upgradePerLevel:0.9}
+        harvestSpeed:{base:2500,level:0,upgradePerLevel:0.9},
+        chopSpeed:{base:5000,level:0,upgradePerLevel:0.9}
     }
     for(let speed in times){
         speed=times[speed]

@@ -7,9 +7,12 @@ let mouseObject
 let orchard, inventory,  money, oak_saplings, shop
 let debugMode=false
 
+let actionTimes
+
 let Actions
 function preload() {
     loadAllImages()
+    actionTimes=setupActionTimes()
     Actions=setupActions()
     items=setupItems()
 }
@@ -17,7 +20,6 @@ function preload() {
 
 
 function setup() {
-
     createCanvas(900, 700)
     mouseObject = new Mouse()
     textAlign(CENTER, CENTER)

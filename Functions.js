@@ -49,7 +49,7 @@ function loadAllImages() {
         shopImage: loadImage('assets/shop.png'),
         workshopImage: loadImage('assets/workshop.png'),
 
-        upgrades: loadImage('assets/workshop.png'),
+        upgrades: loadImage('assets/upgrades.png'),
 
 
         groundImage: loadImage('assets/ground.png'),

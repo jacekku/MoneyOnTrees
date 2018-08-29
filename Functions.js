@@ -99,7 +99,18 @@ function setupButtons() {
     });
 }
 
-
+function setupActionTimes(){
+    let times={
+        plantSpeed:{base:100,level:1,upgradePerLevel:1},
+        harvestSpeed:{base:2500,level:20,upgradePerLevel:0.9},
+        chopSpeed:{base:5000,level:20,upgradePerLevel:0.9}
+    }
+    for(let speed in times){
+        speed=times[speed]
+        speed.actualSpeed=speed.base*(speed.upgradePerLevel**speed.level)
+    }
+    return times
+}
 
 function setupActions() {
     return {
@@ -226,7 +237,8 @@ function saveGame(saveName,setMainSave) {
         treeSpotStates:orchard.getTreeSpotStates(),
         leftPageAt,
         gameVersion,
-        resetAfterUpdate
+        resetAfterUpdate,
+        actionTimes
     }
     console.log("saving "+saveName, saveObject)
     localStorage.setObject(saveName, saveObject)

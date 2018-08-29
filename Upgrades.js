@@ -5,7 +5,7 @@ class Upgrades{
         this.width=w
         this.height=h
         this.availableUpgrades=[
-            "harvestSpeed","chopSpeed","treeYield","fruitYield"
+            "harvestSpeed","chopSpeed","treeYield","fruitYield","sellPrice"
         ]
         this.upgradeCards=[]
     }
@@ -43,7 +43,7 @@ class Upgrades{
 
 
     show(){
-        drawView(this.x, this.y, this.width, this.height,"UPGRADES")
+        drawView(this.x, this.y, this.width, this.height,"UPGRADES (work in progress)")
         this.drawUpgrades()
         
         

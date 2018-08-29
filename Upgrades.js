@@ -29,7 +29,7 @@ class Upgrades{
                     card.showSubSpace("top")
                 }
 
-                x+=cardSize+STYLE.margin
+                x+=cardSize+STYLE.margin*5
                 if(i%4==0){
                     x=this.x+(STYLE.margin)
                     y+=cardSize+STYLE.margin

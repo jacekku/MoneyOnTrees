@@ -9,27 +9,7 @@ function mouseInsideRect(x, y, w, h) {
     return pointInsideRect(mouseX, mouseY, x, y, w, h)
 }
 
-function catchUpOnTicks(leftPageAt){
-    let missedTicks = Math.floor((Date.now() - leftPageAt) / newTickEveryMS)
-    for (let i = 0; i < missedTicks; i++) {
-        tick()
-    }
-}
 
-
-leftPageAt = Date.now()
-let mainSave="mainSave"
-document.onvisibilitychange = function () {
-    if (document.visibilityState == "hidden") {
-        leftPageAt = Date.now()
-        saveGame(mainSave)
-    } else {
-        catchUpOnTicks(leftPageAt)
-    }
-}
-window.addEventListener("unload", () => {
-   saveGame(mainSave)
-})
 
 
 
@@ -119,10 +99,21 @@ function setupButtons() {
     });
 }
 
-
+function setupActionTimes(){
+    let times={
+        plantSpeed:{base:100,level:1,upgradePerLevel:1},
+        harvestSpeed:{base:2500,level:20,upgradePerLevel:0.9},
+        chopSpeed:{base:5000,level:20,upgradePerLevel:0.9}
+    }
+    for(let speed in times){
+        speed=times[speed]
+        speed.actualSpeed=speed.base*(speed.upgradePerLevel**speed.level)
+    }
+    return times
+}
 
 function setupActions() {
-    let Actions = {
+    return {
         NOTHING: {
             id: 0,
             image: null
@@ -140,9 +131,7 @@ function setupActions() {
             id:3,
             image:images.chopDownImage
         },
-        
     };
-    return Actions
 }
 
 
@@ -215,6 +204,28 @@ function recastObject(item, className) {
  * 
  */
 
+function catchUpOnTicks(leftPageAt){
+    let missedTicks = Math.floor((Date.now() - leftPageAt) / newTickEveryMS)
+    for (let i = 0; i < missedTicks; i++) {
+        tick()
+    }
+}
+
+
+leftPageAt = Date.now()
+let mainSave="mainSave"
+document.onvisibilitychange = function () {
+    if (document.visibilityState == "hidden") {
+        leftPageAt = Date.now()
+        saveGame(mainSave)
+    } else {
+        catchUpOnTicks(leftPageAt)
+    }
+}
+window.addEventListener("unload", () => {
+   saveGame(mainSave)
+})
+
 function saveGame(saveName,setMainSave) {
     if(setMainSave && saveName!=mainSave){
         console.log("\n\nSAVE NAME CHANGED TO "+saveName+"\n\n")
@@ -226,7 +237,8 @@ function saveGame(saveName,setMainSave) {
         treeSpotStates:orchard.getTreeSpotStates(),
         leftPageAt,
         gameVersion,
-        resetAfterUpdate
+        resetAfterUpdate,
+        actionTimes
     }
     console.log("saving "+saveName, saveObject)
     localStorage.setObject(saveName, saveObject)
@@ -241,7 +253,6 @@ function loadGame(saveName) {
     } else {
         console.log("loading "+saveName,saveObject)
         orchard=new Orchard()
-
         tickCounter = saveObject.tickCounter
         setAmounts(saveObject.itemsAmounts)
         orchard.setTreeSpotStates(saveObject.treeSpotStates)

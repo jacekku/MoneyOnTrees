@@ -45,11 +45,11 @@ class TreeSpot {
 
     onClick() {
         if (!this.tree && mouseObject.action.id == Actions.PLANT.id) {
-            mouseObject.startAction(this,this.plantTree,100,mouseObject.action.plantType)//HARDCODE
+            mouseObject.startAction(this,this.plantTree,actionTimes.plantSpeed.actualSpeed,mouseObject.action.plantType)
         } else if (this.tree.canHarvest() && mouseObject.action.id == Actions.HARVEST.id) {
-            mouseObject.startAction(this,this.harvestTree,100)//HARDCODE
+            mouseObject.startAction(this,this.harvestTree,actionTimes.harvestSpeed.actualSpeed)
         }else if(this.tree.canChop() && mouseObject.action.id == Actions.CHOPDOWN.id){
-            mouseObject.startAction(this,this.sellTree,100)//HARDCODE
+            mouseObject.startAction(this,this.sellTree,actionTimes.chopSpeed.actualSpeed)
         }
 
     }

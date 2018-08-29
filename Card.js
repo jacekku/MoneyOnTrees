@@ -71,12 +71,13 @@ class Card {
     }
     showSubSpace(subSpaceName){
         let subSpace=this.subSpaces[subSpaceName]
-        if(subSpace.show)subSpace.show()
+        if(subSpace.show)subSpace.show(...subSpace.showArgs)
         else rect(subSpace.x,subSpace.y,subSpace.width,subSpace.height)
-        
+
     }
-    setSubSpaceShow(subSpaceName,showFun){
+    setSubSpaceShow(subSpaceName,showFun,...args){
         let subSpace=this.subSpaces[subSpaceName]
         subSpace.show=showFun
+        subSpace.showArgs=[...args]
     }
 }

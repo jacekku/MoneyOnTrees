@@ -9,6 +9,13 @@ function mouseInsideRect(x, y, w, h) {
     return pointInsideRect(mouseX, mouseY, x, y, w, h)
 }
 
+function copyObjectFields(target,source){
+    for(let f in source){
+        target[f]=source[f]
+    }
+    return target
+}
+
 
 
 
@@ -101,16 +108,41 @@ function setupButtons() {
 
 function setupActionTimes(){
     let times={
-        plantSpeed:{base:100,level:1,upgradePerLevel:1},
+        plantSpeed:{base:100,level:0,upgradePerLevel:1},
         harvestSpeed:{base:2500,level:0,upgradePerLevel:0.9},
-        chopSpeed:{base:5000,level:0,upgradePerLevel:0.9}
+        chopSpeed:{base:5000,level:0,upgradePerLevel:0.9},
+        treeYield:{base:1,level:0,upgradePerLevel:1.1,floor:true},
+        fruitYield:{base:1,level:0,upgradePerLevel:1.1,floor:true},
     }
+    times=calculateActionTimes(times)
+    return times
+}
+function calculateActionTimes(times){
     for(let speed in times){
         speed=times[speed]
         speed.actualSpeed=speed.base*(speed.upgradePerLevel**speed.level)
+        if(speed.floor){
+            speed.actualSpeed=Math.floor(speed.actualSpeed)
+        }
     }
     return times
 }
+function loadActionTimes(times){
+    for(let c in actionTimes){
+        if(times[c]){
+            actionTimes[c]=copyObjectFields(actionTimes[c], times[c])
+        }
+    }
+    return calculateActionTimes(actionTimes) 
+}
+function setActionLevel(action,level){
+    if(typeof action=="string"){
+        action=actionTimes[action]
+    }
+    action.level=level
+    actionTimes=calculateActionTimes(actionTimes)
+}
+
 
 function setupActions() {
     return {
@@ -257,7 +289,7 @@ function loadGame(saveName) {
         setAmounts(saveObject.itemsAmounts)
         orchard.setTreeSpotStates(saveObject.treeSpotStates)
         leftPageAt=saveObject.leftPageAt
-        
+        actionTimes=loadActionTimes(saveObject.actionTimes||setupActionTimes())
         if(saveName=="mainSave")catchUpOnTicks(leftPageAt)
         
         inventory=new Inventory(...items.iterator)
@@ -271,16 +303,20 @@ function loadGame(saveName) {
             }
         }
     }
+    // saveGame(saveName)
 }
 
-function hardResetGame() {
+function hardResetGame() {// refactor this, maybe add a function that remakes all the variables
     localStorage.clear()
-    items=setupItems()
+    preload()
     tickCounter=0
     saveGame("mainSave")
     loadGame("mainSave")
     orchard=new Orchard()
     inventory=new Inventory(...items.iterator)
+}
+function exportSave(saveName="mainSave"){
+    saveStrings([localStorage[saveName]],saveName+".txt")
 }
 
 let views={

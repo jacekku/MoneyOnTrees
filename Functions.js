@@ -113,6 +113,7 @@ function setupActionTimes(){
         chopSpeed:{base:5000,level:0,upgradePerLevel:0.9},
         treeYield:{base:1,level:0,upgradePerLevel:1.1,floor:true},
         fruitYield:{base:1,level:0,upgradePerLevel:1.1,floor:true},
+        sellPrice:{base:1,level:0,upgradePerLevel:1.01},
     }
     times=calculateActionTimes(times)
     return times

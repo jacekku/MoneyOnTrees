@@ -25,8 +25,16 @@ class Upgrades{
                         text(availableUpgrades[upgradeIndex],x+this.width/2,this.y+textSize())
                         pop()
                     },this.availableUpgrades,upgradeIndex)
+                    card.setSubSpaceShow("bottom",function(stringToShow){
+                        push()
+                        fill(0)
+                        textSize(20)
+                        text("current: "+stringToShow,x+this.width/2,this.y+textSize())
+                        pop() 
+                    },actionTimes[ this.availableUpgrades[upgradeIndex]].actualSpeed)
                     card.showBackground()
                     card.showSubSpace("top")
+                    card.showSubSpace("bottom")
                 }
 
                 x+=cardSize+STYLE.margin*5

@@ -109,8 +109,8 @@ function setupButtons() {
 function setupActionTimes(){
     let times={
         plantSpeed:{base:100,level:0,upgradePerLevel:1},
-        harvestSpeed:{base:2500,level:0,upgradePerLevel:0.9},
-        chopSpeed:{base:5000,level:0,upgradePerLevel:0.9},
+        harvestSpeed:{base:1000,level:0,upgradePerLevel:0.9},
+        chopSpeed:{base:2000,level:0,upgradePerLevel:0.9},
         treeYield:{base:1,level:0,upgradePerLevel:1.1,floor:true},
         fruitYield:{base:1,level:0,upgradePerLevel:1.1,floor:true},
         sellPrice:{base:1,level:0,upgradePerLevel:1.01},

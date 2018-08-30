@@ -69,6 +69,12 @@ class Card {
     showBackground() {
         rect(this.x, this.y, this.width, this.height)
     }
+    showAllSubSpaces(){
+        for(const subSpaceName in this.subSpaces){
+            let subSpace=this.subSpaces[subSpaceName]
+            if(subSpace.show)subSpace.show(...subSpace.showArgs)
+        }
+    }
     showSubSpace(subSpaceName){
         let subSpace=this.subSpaces[subSpaceName]
         if(subSpace.show)subSpace.show(...subSpace.showArgs)
@@ -79,5 +85,10 @@ class Card {
         let subSpace=this.subSpaces[subSpaceName]
         subSpace.show=showFun
         subSpace.showArgs=[...args]
+    }
+    isClicked(){
+        if(this.button){
+            return this.button.isClicked()
+        }
     }
 }

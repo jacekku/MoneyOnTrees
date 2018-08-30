@@ -90,7 +90,10 @@ function mouseClicked() {
     }
     else if (views.workshop) {
         workshop.isClicked()
-    } 
+    }
+    else if (views.upgrades) {
+        upgrades.isClicked()
+    }
      else {
         orchard.isClicked()
         if (views.settings) {

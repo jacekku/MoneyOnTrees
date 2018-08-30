@@ -33,10 +33,14 @@ class Upgrades{
                         push()
                         fill(0)
                         textSize(20)
-                        text("current: "+stringToShow,this.x+this.width/2,this.y+textSize())
+                        text("current: "+stringToShow.toFixed(2),this.x+this.width/2,this.y+textSize())
                         pop() 
-                    },actionTimes[ this.availableUpgrades[upgradeIndex]].actualSpeed)
-                    card.button=new Button(card.x,card.y,card.width,card.height,()=>{console.log(card.name)})
+                    },calculateActionTimes(actionTimes)[this.availableUpgrades[upgradeIndex]].actualSpeed)
+                    card.button=new Button(card.x,card.y,card.width,card.height,()=>{
+                        console.log(card.name)
+                        actionTimes[card.name].level+=1
+                        actionTimes=calculateActionTimes(actionTimes)
+                    })
                 }
 
                 x+=cardSize+STYLE.margin*5

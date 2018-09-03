@@ -108,12 +108,14 @@ function setupButtons() {
 
 function setupActionTimes(){
     let times={
+        reset:true,
         plantSpeed:{base:100,level:0,upgradePerLevel:1},
         harvestSpeed:{base:2000,level:0,upgradePerLevel:0.9},
         chopSpeed:{base:2000,level:0,upgradePerLevel:0.9},
         treeYield:{base:1,level:0,upgradePerLevel:1.01,floor:true},
         fruitYield:{base:1,level:0,upgradePerLevel:1.01,floor:true},
         sellPrice:{base:1,level:0,upgradePerLevel:1.01},
+        growthSpeed:{base:1,level:0,upgradePerLevel:1.001,floor:false},
     }
     times=calculateActionTimes(times)
     return times
@@ -122,6 +124,7 @@ function calculateActionTimes(times){
     for(let speed in times){
         speed=times[speed]
         speed.actualSpeed=speed.base*(speed.upgradePerLevel**speed.level)
+        speed.subLevelSpeed=speed.actualSpeed
         if(speed.floor){
             speed.actualSpeed=Math.floor(speed.actualSpeed)
         }
@@ -129,6 +132,7 @@ function calculateActionTimes(times){
     return times
 }
 function loadActionTimes(times){
+    if(actionTimes.reset)return calculateActionTimes(actionTimes) 
     for(let c in actionTimes){
         if(times[c]){
             actionTimes[c]=copyObjectFields(actionTimes[c], times[c])

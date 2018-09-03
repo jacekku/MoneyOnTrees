@@ -5,7 +5,7 @@ class Upgrades{
         this.width=w
         this.height=h
         this.availableUpgrades=[
-            "harvestSpeed","chopSpeed","treeYield","fruitYield","sellPrice"
+            "harvestSpeed","chopSpeed","treeYield","fruitYield","sellPrice","growthSpeed"
         ]
         this.upgradeCards=[]
         this.setupUpgrades()
@@ -29,13 +29,24 @@ class Upgrades{
                         text(availableUpgrades[upgradeIndex],this.x+this.width/2,this.y+textSize())
                         pop()
                     },this.availableUpgrades,upgradeIndex)
-                    card.setSubSpaceShow("bottom",function(stringToShow){
+
+                    let time = calculateActionTimes(actionTimes)[this.availableUpgrades[upgradeIndex]]
+
+                    card.setSubSpaceShow("bottom",function(stringToShow,stringToShow2,stringToShow3,stringToShow4){
                         push()
                         fill(0)
                         textSize(20)
-                        text("current: "+stringToShow.toFixed(2),this.x+this.width/2,this.y+textSize())
+                        
+                        text("current: "+stringToShow.toFixed(3),this.x+this.width/2,this.y+textSize())
+                        text("actual: "+stringToShow2.toFixed(3),this.x+this.width/2,this.y+textSize()*2)
+                        text("next: "+stringToShow3.toFixed(3),this.x+this.width/2,this.y+textSize()*3)
+                        text("level: "+stringToShow4,this.x+this.width/2,this.y+textSize()*4)
                         pop() 
-                    },calculateActionTimes(actionTimes)[this.availableUpgrades[upgradeIndex]].actualSpeed)
+                    },time.subLevelSpeed,
+                    time.actualSpeed,
+                    time.actualSpeed*time.upgradePerLevel,
+                    time.level
+                    )
                     card.button=new Button(card.x,card.y,card.width,card.height,()=>{
                         console.log(card.name)
                         actionTimes[card.name].level+=1

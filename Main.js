@@ -54,6 +54,7 @@ function draw() {
     }
     else if (views.upgrades) {
         upgrades.show()
+        upgrades.setupUpgrades()
     }
     else {
         orchard.show()

@@ -1,5 +1,5 @@
 class Tree {
-    constructor(spot, type, growthStage = 0, growthCounter = 0, growthThreshold = 200) {//HARDCODE
+    constructor(spot, type, growthStage = 0, growthCounter = 0, growthThreshold = 200/actionTimes.growthSpeed.actualSpeed) {//HARDCODE
         this.spot = spot
         this.type = type
         this.growthStage = growthStage

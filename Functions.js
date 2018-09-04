@@ -64,6 +64,9 @@ function loadAllImages() {
 }
 
 
+
+
+
 let buttons={
     harvestButton:{},
     shopButton:{},
@@ -105,17 +108,27 @@ function setupButtons() {
         openView("settings");
     });
 }
+function onePlateuGraph(x){
+    return (3.361344538e-4*(x**3)) - (5.042016807e-2*(x**2)) + (2.680672269*x-5.456968211e-12)
+}
+function linearGraph(x){
+    return x
+}
+
+
+
+
 
 function setupActionTimes(){
     let times={
         reset:true,
-        plantSpeed:{base:100,level:0,upgradePerLevel:1},
-        harvestSpeed:{base:2000,level:0,upgradePerLevel:0.9},
-        chopSpeed:{base:2000,level:0,upgradePerLevel:0.9},
-        treeYield:{base:1,level:0,upgradePerLevel:1.01,floor:true},
-        fruitYield:{base:1,level:0,upgradePerLevel:1.01,floor:true},
-        sellPrice:{base:1,level:0,upgradePerLevel:1.01},
-        growthSpeed:{base:1,level:0,upgradePerLevel:1.001,floor:false},
+        plantSpeed:{base:100,level:0,upgradePerLevel:1,pricingPerLevel:1},
+        harvestSpeed:{base:2000,level:0,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGraph},
+        chopSpeed:{base:2000,level:0,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGraph},
+        treeYield:{base:1,level:0,upgradePerLevel:1.01,floor:true,pricingPerLevel:linearGraph},
+        fruitYield:{base:1,level:0,upgradePerLevel:1.01,floor:true,pricingPerLevel:linearGraph},
+        sellPrice:{base:1,level:0,upgradePerLevel:1.01,pricingPerLevel:linearGraph},
+        growthSpeed:{base:1,level:0,upgradePerLevel:1.001,floor:false,pricingPerLevel:linearGraph},
     }
     times=calculateActionTimes(times)
     return times

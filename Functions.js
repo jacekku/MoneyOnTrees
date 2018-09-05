@@ -9,6 +9,13 @@ function mouseInsideRect(x, y, w, h) {
     return pointInsideRect(mouseX, mouseY, x, y, w, h)
 }
 
+function copyObjectFields(target,source){
+    for(let f in source){
+        target[f]=source[f]
+    }
+    return target
+}
+
 
 
 
@@ -42,7 +49,7 @@ function loadAllImages() {
         shopImage: loadImage('assets/shop.png'),
         workshopImage: loadImage('assets/workshop.png'),
 
-        upgrades: loadImage('assets/workshop.png'),
+        upgrades: loadImage('assets/upgrades.png'),
 
 
         groundImage: loadImage('assets/ground.png'),
@@ -98,18 +105,72 @@ function setupButtons() {
         openView("settings");
     });
 }
+function onePlateuGraph(x){
+    return 1- ((3.361344538e-4*(x**3)) - (5.042016807e-2*(x**2)) + (2.680672269*x-5.456968211e-12))/100
+}
+function linearGraph(x){
+    return linearGenerator(1,0)(x)
+}
+function linearGenerator(angle,base){
+    return function(x){return angle*x+base}
+}
+function exponentialGenerator(base,yPos,multiplicator){
+    return function(x){return (base**x)*multiplicator + yPos}
+}
 
 function setupActionTimes(){
     let times={
-        plantSpeed:{base:100,level:1,upgradePerLevel:1},
-        harvestSpeed:{base:2500,level:20,upgradePerLevel:0.9},
-        chopSpeed:{base:5000,level:20,upgradePerLevel:0.9}
+        reset:false,
+        plantSpeed:{base:300,level:1,upgradePerLevel:1,pricingPerLevel:1},
+        harvestSpeed:{base:2000,level:0,maxLevel:100,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGenerator(1000,2000)},
+        chopSpeed:{base:2000,level:0,maxLevel:100,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGenerator(200,100)},
+        treeYield:{base:1,level:1,upgradePerLevel:linearGraph,floor:true,pricingPerLevel:linearGenerator(1000,1000)},
+        fruitYield:{base:1,level:1,upgradePerLevel:linearGraph,floor:true,pricingPerLevel:linearGenerator(10000,10000)},
+        sellPrice:{base:1,level:1,upgradePerLevel:linearGraph,pricingPerLevel:linearGenerator(10000,10000)},
+        growthSpeed:{base:1,level:0,upgradePerLevel:linearGenerator(0.01,1),floor:false,pricingPerLevel:linearGenerator(2500,2000)},
     }
+    times=calculateActionTimes(times)
+    return times
+}
+function calculateActionTimes(times){
     for(let speed in times){
         speed=times[speed]
-        speed.actualSpeed=speed.base*(speed.upgradePerLevel**speed.level)
+        if(typeof speed.upgradePerLevel == "function")speed.actualSpeed=speed.base*speed.upgradePerLevel(speed.level)
+        else speed.actualSpeed=speed.base*(speed.upgradePerLevel**speed.level)
+        speed.subLevelSpeed=speed.actualSpeed
+        if(speed.floor){
+            speed.actualSpeed=Math.floor(speed.actualSpeed)
+        }
     }
     return times
+}
+function loadActionTimes(times){
+    if(actionTimes.reset)return calculateActionTimes(actionTimes) 
+    for(let c in actionTimes){
+        if(times[c]){
+            actionTimes[c]=copyObjectFields(actionTimes[c], times[c])
+        }
+    }
+    return calculateActionTimes(actionTimes) 
+}
+function setActionLevel(action,level){
+    if(typeof action=="string"){
+        action=actionTimes[action]
+    }
+    if(level)action.level=level
+    else action.level+=action.level+1<=(action.maxLevel||Infinity)?1:0 // OH MY GOD THIS IS SO UNREADABLE
+    actionTimes=calculateActionTimes(actionTimes)
+}
+function buyUpgrade(action){
+    if(typeof action=="string"){
+        action=actionTimes[action]
+    }
+    if(items.money.subtractAmount(action.pricingPerLevel(action.level))){
+        setActionLevel(action)
+        return true
+    }else{
+        return false
+    }
 }
 
 function setupActions() {
@@ -257,7 +318,7 @@ function loadGame(saveName) {
         setAmounts(saveObject.itemsAmounts)
         orchard.setTreeSpotStates(saveObject.treeSpotStates)
         leftPageAt=saveObject.leftPageAt
-        
+        actionTimes=loadActionTimes(saveObject.actionTimes||setupActionTimes())
         if(saveName=="mainSave")catchUpOnTicks(leftPageAt)
         
         inventory=new Inventory(...items.iterator)
@@ -271,16 +332,20 @@ function loadGame(saveName) {
             }
         }
     }
+    // saveGame(saveName)
 }
 
-function hardResetGame() {
+function hardResetGame() {// refactor this, maybe add a function that remakes all the variables
     localStorage.clear()
-    items=setupItems()
+    preload()
     tickCounter=0
     saveGame("mainSave")
     loadGame("mainSave")
     orchard=new Orchard()
     inventory=new Inventory(...items.iterator)
+}
+function exportSave(saveName="mainSave"){
+    saveStrings([localStorage[saveName]],saveName+".txt")
 }
 
 let views={

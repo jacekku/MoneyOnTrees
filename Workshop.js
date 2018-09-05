@@ -112,7 +112,7 @@ class Workshop{
                 if(itemIndex!=-1){this.showItem(x, y, spotSize, this.itemNames[itemIndex])}
 
 
-                x+=spotSize+STYLE.margin
+                x+=spotSize+STYLE.margin*5
                 if(i%4==0){
                     x=this.x+(STYLE.margin)
                     y+=spotSize+STYLE.margin

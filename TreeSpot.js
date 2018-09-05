@@ -10,7 +10,19 @@ class TreeSpot {
         fill(255)
         rect( this.x, this.y, STYLE.treeSpotSize, STYLE.treeSpotSize)
         //image(images.groundImage, this.x, this.y, STYLE.treeSpotSize, STYLE.treeSpotSize)
-        if (this.tree) this.tree.show()
+        if (this.tree) {
+            this.tree.show()
+            if(debugMode){
+                push()
+                fill(0)
+                textAlign(LEFT,TOP)
+                textSize(15)
+                text(this.tree.growthThreshold,this.x,this.y+textSize()*0)
+                text(this.tree.growthCounter,this.x,this.y+textSize()*1)
+                text(this.tree.growthStage,this.x,this.y+textSize()*2)
+                pop()
+            }
+        }
 
     }
     tick() {
@@ -58,11 +70,11 @@ class TreeSpot {
         items[type+"_saplings"].subtractAmount(1)
     }
     sellTree() {
-        this.tree.chopItem.addAmount(1)
+        this.tree.chopItem.addAmount(actionTimes.treeYield.actualSpeed)
         this.tree = null
     }
     harvestTree(){
-        this.tree.harvestItem.addAmount(1)
+        this.tree.harvestItem.addAmount(actionTimes.fruitYield.actualSpeed)
         this.tree.harvested=true
     }
 }

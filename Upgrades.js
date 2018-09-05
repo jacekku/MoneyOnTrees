@@ -44,7 +44,7 @@ class Upgrades{
                         pop() 
                     },time.subLevelSpeed,
                     time.actualSpeed,
-                    time.actualSpeed*time.upgradePerLevel,
+                    time.upgradePerLevel(time.level+1),
                     time.level
                     )
                     card.button=new Button(card.x,card.y,card.width,card.height,()=>{

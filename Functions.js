@@ -64,9 +64,6 @@ function loadAllImages() {
 }
 
 
-
-
-
 let buttons={
     harvestButton:{},
     shopButton:{},
@@ -115,20 +112,16 @@ function linearGraph(x){
     return x
 }
 
-
-
-
-
 function setupActionTimes(){
     let times={
         reset:true,
         plantSpeed:{base:100,level:0,upgradePerLevel:1,pricingPerLevel:1},
         harvestSpeed:{base:2000,level:0,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGraph},
         chopSpeed:{base:2000,level:0,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGraph},
-        treeYield:{base:1,level:0,upgradePerLevel:1.01,floor:true,pricingPerLevel:linearGraph},
-        fruitYield:{base:1,level:0,upgradePerLevel:1.01,floor:true,pricingPerLevel:linearGraph},
-        sellPrice:{base:1,level:0,upgradePerLevel:1.01,pricingPerLevel:linearGraph},
-        growthSpeed:{base:1,level:0,upgradePerLevel:1.001,floor:false,pricingPerLevel:linearGraph},
+        treeYield:{base:1,level:1,upgradePerLevel:linearGraph,floor:true,pricingPerLevel:linearGraph},
+        fruitYield:{base:1,level:1,upgradePerLevel:linearGraph,floor:true,pricingPerLevel:linearGraph},
+        sellPrice:{base:1,level:1,upgradePerLevel:linearGraph,pricingPerLevel:linearGraph},
+        growthSpeed:{base:1,level:1,upgradePerLevel:linearGraph,floor:false,pricingPerLevel:linearGraph},
     }
     times=calculateActionTimes(times)
     return times
@@ -136,7 +129,8 @@ function setupActionTimes(){
 function calculateActionTimes(times){
     for(let speed in times){
         speed=times[speed]
-        speed.actualSpeed=speed.base*(speed.upgradePerLevel**speed.level)
+        if(typeof speed.upgradePerLevel == "function")speed.actualSpeed=speed.upgradePerLevel(speed.level)
+        else speed.actualSpeed=speed.upgradePerLevel*speed.level
         speed.subLevelSpeed=speed.actualSpeed
         if(speed.floor){
             speed.actualSpeed=Math.floor(speed.actualSpeed)

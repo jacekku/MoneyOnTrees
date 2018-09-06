@@ -7,12 +7,15 @@ let mouseObject
 let orchard, inventory,  money, oak_saplings, shop
 let debugMode=false
 
+soundEnabled=true
+
+
+
 let actionTimes
 
 let Actions
 function preload() {
     comeBackSound = loadSound("assets/sounds/comeBack.wav")
-
     loadAllImages()
     actionTimes=setupActionTimes()
     Actions=setupActions()
@@ -22,6 +25,7 @@ function preload() {
 
 
 function setup() {
+    comeBackSound.setVolume(0.5)
     createCanvas(900, 700)
     mouseObject = new Mouse()
     textAlign(CENTER, CENTER)

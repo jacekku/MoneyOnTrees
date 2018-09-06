@@ -5,7 +5,7 @@ class Upgrades{
         this.width=w
         this.height=h
         this.availableUpgrades=[
-            "harvestSpeed","chopSpeed","treeYield","fruitYield","growthSpeed"
+            "chopSpeed","treeYield","growthSpeed","harvestSpeed","fruitYield"
         ]
         this.upgradeCards=[]
         this.setupUpgrades()
@@ -38,7 +38,7 @@ class Upgrades{
                         textSize(20)
                         
                         text("price: "+stringToShow,this.x+this.width/2,this.y+textSize())
-                        text("actual: "+stringToShow2,this.x+this.width/2,this.y+textSize()*2)
+                        text("current: "+stringToShow2,this.x+this.width/2,this.y+textSize()*2)
                         text("next: "+stringToShow3,this.x+this.width/2,this.y+textSize()*3)
                         text("level: "+stringToShow4,this.x+this.width/2,this.y+textSize()*4)
                         pop() 

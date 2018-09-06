@@ -42,7 +42,7 @@ class Upgrades{
                         text("next: "+stringToShow3,this.x+this.width/2,this.y+textSize()*3)
                         text("level: "+stringToShow4,this.x+this.width/2,this.y+textSize()*4)
                         pop() 
-                    },time.pricingPerLevel(time.level),
+                    },Math.round(time.pricingPerLevel(time.level)),
                     time.actualSpeed.toFixed(3),
                     time.level<(time.maxLevel||Infinity)?time.base*time.upgradePerLevel(time.level+1).toFixed(3):"Max Level",
                     time.level

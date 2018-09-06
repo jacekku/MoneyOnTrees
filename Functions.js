@@ -72,6 +72,9 @@ let buttons={
     upgradesButton:{},
     chopDownButton:{},
 }
+winButtons={
+
+}
 function setupButtons() {
     buttons.harvestButton = new Button(STYLE.buttonX, STYLE.buttonY);
     buttons.harvestButton.setImage(images.harvestImage);
@@ -105,6 +108,16 @@ function setupButtons() {
     buttons.settingsButton.setOnClick(function () {
         openView("settings");
     });
+    winButtons.resetButton = new Button(width/2-400, textSize()*4, 100, 100, hardResetGame)
+    winButtons.resetButton.setImage(images.reset)
+    winButtons.continuePlayButton = new Button(width/2+300, textSize()*4, 100, 100, () => {
+        continuePlay = true;
+        openView("orchard")
+        buttons.win = new Button(STYLE.buttonX + STYLE.margin * 9 + STYLE.buttonSize * 9, STYLE.buttonY);
+        buttons.win.setImage(images.settings);
+        buttons.win.setOnClick(function () {openView("win");}); 
+    })
+    winButtons.continuePlayButton.setImage(images.harvestImage)
 }
 function onePlateuGraph(x){
     return 1- ((3.361344538e-4*(x**3)) - (5.042016807e-2*(x**2)) + (2.680672269*x-5.456968211e-12))/100
@@ -343,7 +356,8 @@ function saveGame(saveName,setMainSave) {
         gameVersion,
         resetAfterUpdate,
         actionTimes,
-        gameStartedAt
+        gameStartedAt,
+        gameWonAt
     }
     console.log("saving "+saveName, saveObject)
     localStorage.setObject(saveName, saveObject)
@@ -364,6 +378,7 @@ function loadGame(saveName) {
         leftPageAt=saveObject.leftPageAt
         actionTimes=loadActionTimes(saveObject.actionTimes||setupActionTimes())
         gameStartedAt=saveObject.gameStartedAt||Date.now()
+        gameWonAt=saveObject.gameWonAt||0
 
         if(saveName=="mainSave")catchUpOnTicks(leftPageAt)
         
@@ -459,7 +474,7 @@ function timeParser(milis){
     minutes=milis/(secondsInMinute*milisInSecond)
     seconds=milis/(milisInSecond)
 
-    return `${Math.floor(days)} days ${Math.floor(hours%hoursInDays)} hours ${Math.floor(minutes%minutesInHour)} minutes ${Math.floor(seconds%milisInSecond)} seconds`
+    return `${Math.floor(days)} days ${Math.floor(hours%hoursInDays)} hours ${Math.floor(minutes%minutesInHour)} minutes ${Math.floor(seconds%secondsInMinute)} seconds`
 
 
 }

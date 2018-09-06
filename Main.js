@@ -83,9 +83,12 @@ function draw() {
         background(255)
         fill(0)
         text("YOU WIN!!!", width / 2, textSize())
+        text("Please Share your time in the comments :)", width / 2, textSize()*2)
         let timeDiff = gameWonAt - gameStartedAt
-        text(`It took you ${timeParser(timeDiff)}`, width / 2, textSize() * 2)
-
+        text(`It took you ${timeParser(timeDiff)}, nice!`, width / 2, textSize() * 3)
+        for (const button in winButtons) {
+            winButtons[button].show()
+        }
     }
     mouseObject.show()
 }
@@ -95,39 +98,41 @@ function keyPressed() {
         debugMode = !debugMode
     }
 }
-
 function mouseClicked() {
-    if (views.shop) {
+    for (const button in buttons) {
+        buttons[button].isClicked()
+    }
+
+    if (views.win) {
+        for (const button in winButtons) {
+            winButtons[button].isClicked()
+        }
+    } else if (views.shop) {
         shop.isClicked()
     } else if (views.workshop) {
         workshop.isClicked()
     } else if (views.upgrades) {
         upgrades.isClicked()
-    } else {
+    } else if (views.orchard || views.settings || views.inventory) {
         orchard.isClicked()
         if (views.settings) {
             settings.isClicked()
-        } else {
+        }
+        else {
             inventory.isClicked()
         }
     }
-    for (const button in buttons) {
-        buttons[button].isClicked()
-    }
 }
+
 
 function tick() {
     if (checkWin() && !continuePlay) {
         if (gameWonAt == 0) {
             gameWonAt = Date.now()
-            resetButton = new Button(100, 100, 100, 100, hardResetGame)
-            resetButton.setImage(images.reset)
             continuePlayButton = new Button(200, 100, 100, 100, () => {
                 continuePlay = true;
                 openView("orchard")
             })
-            buttons.push(resetButton)
-            buttons.push(continuePlayButton)
         }
         openView("win")
     }

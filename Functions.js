@@ -109,23 +109,23 @@ function onePlateuGraph(x){
     return 1- ((3.361344538e-4*(x**3)) - (5.042016807e-2*(x**2)) + (2.680672269*x-5.456968211e-12))/100
 }
 function linearGraph(x){
-    return linearGenerator(1,0)(x)
+    return x
 }
 function linearGenerator(angle,base){
     return function(x){return angle*x+base}
 }
-function exponentialGenerator(base,yPos,multiplicator){
-    return function(x){return (base**x)*multiplicator + yPos}
+function exponentialGenerator(base,start,multiplicator){
+    return function(x){return (base**x)*multiplicator + start}
 }
 
 function setupActionTimes(){
     let times={
-        reset:false,
-        plantSpeed:{base:300,level:1,upgradePerLevel:1,pricingPerLevel:1},
+        reset:true,
+        plantSpeed:{base:300,level:1,upgradePerLevel:linearGraph,pricingPerLevel:linearGraph},
         harvestSpeed:{base:2000,level:0,maxLevel:100,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGenerator(1000,2000)},
         chopSpeed:{base:2000,level:0,maxLevel:100,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGenerator(200,100)},
-        treeYield:{base:1,level:1,upgradePerLevel:linearGraph,floor:true,pricingPerLevel:linearGenerator(1000,1000)},
-        fruitYield:{base:1,level:1,upgradePerLevel:linearGraph,floor:true,pricingPerLevel:linearGenerator(10000,10000)},
+        treeYield:{base:1,level:0,upgradePerLevel:linearGenerator(1,1),floor:true,pricingPerLevel:exponentialGenerator(1.7,1000,1000)},
+        fruitYield:{base:1,level:0,upgradePerLevel:linearGenerator(1,1),floor:true,pricingPerLevel:exponentialGenerator(2.5,10000,10000)},
         sellPrice:{base:1,level:1,upgradePerLevel:linearGraph,pricingPerLevel:linearGenerator(10000,10000)},
         growthSpeed:{base:1,level:0,upgradePerLevel:linearGenerator(0.01,1),floor:false,pricingPerLevel:linearGenerator(2500,2000)},
     }
@@ -165,7 +165,7 @@ function buyUpgrade(action){
     if(typeof action=="string"){
         action=actionTimes[action]
     }
-    if(items.money.subtractAmount(action.pricingPerLevel(action.level))){
+    if(items.money.subtractAmount(Math.round(action.pricingPerLevel(action.level)))){
         setActionLevel(action)
         return true
     }else{

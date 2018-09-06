@@ -4,22 +4,24 @@ let running = true
 tickCounter = 0
 
 let mouseObject
-let orchard, inventory,  money, oak_saplings, shop
-let debugMode=false
+let orchard, inventory, money, oak_saplings, shop
+let debugMode = false
 
-soundEnabled=true
-gameWonAt=0
+soundEnabled = true
+gameWonAt = 0
+continuePlay = false
 
 
 let actionTimes
 
 let Actions
+
 function preload() {
     comeBackSound = loadSound("assets/sounds/comeBack.wav")
     loadAllImages()
-    actionTimes=setupActionTimes()
-    Actions=setupActions()
-    items=setupItems()
+    actionTimes = setupActionTimes()
+    Actions = setupActions()
+    items = setupItems()
 }
 
 
@@ -32,15 +34,15 @@ function setup() {
     textSize(STYLE.textSize)
     noCursor()
     noStroke()
-   
+
     STYLE.buttonSize = height - (STYLE.orchard.height + 3 * STYLE.margin)
     STYLE.orchard.viewY += STYLE.textSize + STYLE.margin
 
-    STYLE.itemInShopSize = (STYLE.orchard.height-textSize()-(STYLE.margin*4))/3
+    STYLE.itemInShopSize = (STYLE.orchard.height - textSize() - (STYLE.margin * 4)) / 3
     STYLE.treeSpotSize = 100
-    
+
     STYLE.inventory.width = width - 620 - 10
-    if(!orchard)orchard = new Orchard()
+    if (!orchard) orchard = new Orchard()
     shop = new Shop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     workshop = new Workshop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     upgrades = new Upgrades(10, 10, width - 20, height - 30 - STYLE.buttonSize)
@@ -55,15 +57,12 @@ function draw() {
     background(128)
     if (views.shop) {
         shop.show()
-    }
-    else if (views.workshop) {
+    } else if (views.workshop) {
         workshop.show()
-    }
-    else if (views.upgrades) {
+    } else if (views.upgrades) {
         upgrades.show()
         upgrades.setupUpgrades()
-    }
-    else {
+    } else {
         orchard.show()
         if (views.settings) {
             settings.show()
@@ -72,59 +71,67 @@ function draw() {
         }
 
     }
-    
-    for(const button in buttons){
+
+    for (const button in buttons) {
         buttons[button].show()
     }
     if (running && oldTickTime < Date.now()) {
         tick()
         oldTickTime = Date.now() + newTickEveryMS;
     }
-    if(views.win){
+    if (views.win) {
         background(255)
         fill(0)
-        text("YOU WIN!!!",width/2,textSize())
-        let timeDiff=gameWonAt-gameStartedAt
-        text(`It took you ${timeParser(timeDiff)}`,width/2,textSize()*2)
+        text("YOU WIN!!!", width / 2, textSize())
+        let timeDiff = gameWonAt - gameStartedAt
+        text(`It took you ${timeParser(timeDiff)}`, width / 2, textSize() * 2)
+
     }
     mouseObject.show()
 }
-function keyPressed(){
-    if(keyCode==109){
-        debugMode=!debugMode
+
+function keyPressed() {
+    if (keyCode == 109) {
+        debugMode = !debugMode
     }
 }
+
 function mouseClicked() {
     if (views.shop) {
         shop.isClicked()
-    }
-    else if (views.workshop) {
+    } else if (views.workshop) {
         workshop.isClicked()
-    }
-    else if (views.upgrades) {
+    } else if (views.upgrades) {
         upgrades.isClicked()
-    }
-     else {
+    } else {
         orchard.isClicked()
         if (views.settings) {
-           settings.isClicked()
+            settings.isClicked()
         } else {
             inventory.isClicked()
         }
     }
-    for(const button in buttons){
+    for (const button in buttons) {
         buttons[button].isClicked()
     }
 }
-function tick(){
-    if(checkWin()){
-        if(gameWonAt==0)gameWonAt=Date.now()
+
+function tick() {
+    if (checkWin() && !continuePlay) {
+        if (gameWonAt == 0) {
+            gameWonAt = Date.now()
+            resetButton = new Button(100, 100, 100, 100, hardResetGame)
+            resetButton.setImage(images.reset)
+            continuePlayButton = new Button(200, 100, 100, 100, () => {
+                continuePlay = true;
+                openView("orchard")
+            })
+            buttons.push(resetButton)
+            buttons.push(continuePlayButton)
+        }
         openView("win")
     }
     orchard.tick()
     mouseObject.tick()
     tickCounter++
 }
-
-
-

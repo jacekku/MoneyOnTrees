@@ -11,6 +11,8 @@ let actionTimes
 
 let Actions
 function preload() {
+    comeBackSound = loadSound("assets/sounds/comeBack.wav")
+
     loadAllImages()
     actionTimes=setupActionTimes()
     Actions=setupActions()

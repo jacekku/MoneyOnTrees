@@ -302,7 +302,8 @@ function saveGame(saveName,setMainSave) {
         leftPageAt,
         gameVersion,
         resetAfterUpdate,
-        actionTimes
+        actionTimes,
+        gameStartedAt
     }
     console.log("saving "+saveName, saveObject)
     localStorage.setObject(saveName, saveObject)
@@ -313,7 +314,7 @@ function saveGame(saveName,setMainSave) {
 function loadGame(saveName) {
     let saveObject = localStorage.getObject(saveName)
     if (saveObject == null) {
-        saveGame(saveName)
+        hardResetGame()
     } else {
         console.log("loading "+saveName,saveObject)
         orchard=new Orchard()
@@ -322,7 +323,10 @@ function loadGame(saveName) {
         orchard.setTreeSpotStates(saveObject.treeSpotStates)
         leftPageAt=saveObject.leftPageAt
         actionTimes=loadActionTimes(saveObject.actionTimes||setupActionTimes())
+        gameStartedAt=saveObject.gameStartedAt||Date.now()
+
         if(saveName=="mainSave")catchUpOnTicks(leftPageAt)
+        
         
         inventory=new Inventory(...items.iterator)
         if(saveObject.gameVersion==null || saveObject.gameVersion<gameVersion){
@@ -342,6 +346,7 @@ function hardResetGame() {// refactor this, maybe add a function that remakes al
     localStorage.clear()
     preload()
     tickCounter=0
+    gameStartedAt=Date.now()
     saveGame("mainSave")
     loadGame("mainSave")
     orchard=new Orchard()
@@ -356,7 +361,8 @@ let views={
     workshop:false,
     shop:false,
     settings:false,
-    upgrades:false
+    upgrades:false,
+    win:false
 }
 function drawView(x,y,w,h,viewTitle){
     image(images.plankBackgroundImage,x, y,w+1,textSize()+1)
@@ -368,7 +374,6 @@ function drawView(x,y,w,h,viewTitle){
 function openView(viewToOpen){
     for(let view in views){
         views[view]=false
-        
     }
     views[viewToOpen]=true
 }
@@ -397,4 +402,24 @@ function soundEnable(){
     else settings.settings.sound.image=images.soundOff
     // handleSound(sound.buttonClicked)
     handleSound()
+}
+
+function checkWin(){
+    return orchard.treeSpots.filter(e=>e.tree).filter(e=>e.tree.type=="cherry").length==orchard.treeSpots.length
+}
+
+function timeParser(milis){
+    milisInSecond=1000
+    secondsInMinute=60
+    minutesInHour=60
+    hoursInDays=24
+    
+    days=milis/(hoursInDays*minutesInHour*secondsInMinute*milisInSecond)
+    hours=milis/(minutesInHour*secondsInMinute*milisInSecond)
+    minutes=milis/(secondsInMinute*milisInSecond)
+    seconds=milis/(milisInSecond)
+
+    return `${Math.floor(days)} days ${Math.floor(hours%hoursInDays)} hours ${Math.floor(minutes%minutesInHour)} minutes ${Math.floor(seconds%milisInSecond)} seconds`
+
+
 }

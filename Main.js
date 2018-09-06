@@ -8,7 +8,7 @@ let orchard, inventory,  money, oak_saplings, shop
 let debugMode=false
 
 soundEnabled=true
-
+gameWonAt=0
 
 
 let actionTimes
@@ -44,7 +44,8 @@ function setup() {
     shop = new Shop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     workshop = new Workshop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
     upgrades = new Upgrades(10, 10, width - 20, height - 30 - STYLE.buttonSize)
-    settings=new Settings()
+    settings = new Settings()
+
 
     setupButtons();
     loadGame(mainSave)
@@ -72,10 +73,6 @@ function draw() {
 
     }
     
-
-
-
-
     for(const button in buttons){
         buttons[button].show()
     }
@@ -83,7 +80,13 @@ function draw() {
         tick()
         oldTickTime = Date.now() + newTickEveryMS;
     }
-    
+    if(views.win){
+        background(255)
+        fill(0)
+        text("YOU WIN!!!",width/2,textSize())
+        let timeDiff=gameWonAt-gameStartedAt
+        text(`It took you ${timeParser(timeDiff)}`,width/2,textSize()*2)
+    }
     mouseObject.show()
 }
 function keyPressed(){
@@ -114,6 +117,10 @@ function mouseClicked() {
     }
 }
 function tick(){
+    if(checkWin()){
+        if(gameWonAt==0)gameWonAt=Date.now()
+        openView("win")
+    }
     orchard.tick()
     mouseObject.tick()
     tickCounter++

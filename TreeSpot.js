@@ -20,6 +20,7 @@ class TreeSpot {
                 text(this.tree.growthThreshold,this.x,this.y+textSize()*0)
                 text(this.tree.growthCounter,this.x,this.y+textSize()*1)
                 text(this.tree.growthStage,this.x,this.y+textSize()*2)
+                text(this.tree.getTicksToFullyGrown(),this.x,this.y+textSize()*3)
                 pop()
             }
         }

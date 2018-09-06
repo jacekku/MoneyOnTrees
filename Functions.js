@@ -120,15 +120,55 @@ function exponentialGenerator(base,start,multiplicator){
 }
 
 function setupActionTimes(){
-    let times={
-        reset:false,//CHECK BEFORE UPDATE (false)
-        plantSpeed:{base:300,level:1,upgradePerLevel:linearGraph,pricingPerLevel:linearGraph},
-        harvestSpeed:{base:2000,level:0,maxLevel:100,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGenerator(1000,2000)},
-        chopSpeed:{base:2000,level:0,maxLevel:100,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGenerator(200,100)},
-        treeYield:{base:1,level:0,upgradePerLevel:linearGenerator(1,1),floor:true,pricingPerLevel:exponentialGenerator(1.7,500,1000)},
-        fruitYield:{base:1,level:0,upgradePerLevel:linearGenerator(1,1),floor:true,pricingPerLevel:exponentialGenerator(2.5,10000,10000)},
-        sellPrice:{base:1,level:1,upgradePerLevel:linearGraph,pricingPerLevel:linearGenerator(10000,10000)},
-        growthSpeed:{base:1,level:0,upgradePerLevel:linearGenerator(0.01,1),floor:false,pricingPerLevel:linearGenerator(2500,2000)},
+    let times = {
+        reset: false, //CHECK BEFORE UPDATE (false)
+        plantSpeed: {
+            base: 300,
+            level: 1,
+            upgradePerLevel: linearGraph,
+            pricingPerLevel: linearGraph
+        },
+        harvestSpeed: {
+            base: 2000,
+            level: 0,
+            maxLevel: 100,
+            upgradePerLevel: onePlateuGraph,
+            pricingPerLevel: linearGenerator(1000, 2000)
+        },
+        chopSpeed: {
+            base: 2000,
+            level: 0,
+            maxLevel: 100,
+            upgradePerLevel: onePlateuGraph,
+            pricingPerLevel: linearGenerator(200, 100)
+        },
+        treeYield: {
+            base: 1,
+            level: 0,
+            upgradePerLevel: linearGenerator(1, 1),
+            floor: true,
+            pricingPerLevel: exponentialGenerator(1.7, -500, 1000)
+        },
+        fruitYield: {
+            base: 1,
+            level: 0,
+            upgradePerLevel: linearGenerator(1, 1),
+            floor: true,
+            pricingPerLevel: exponentialGenerator(2.5, 10000, 10000)
+        },
+        sellPrice: {
+            base: 1,
+            level: 1,
+            upgradePerLevel: linearGraph,
+            pricingPerLevel: linearGenerator(10000, 10000)
+        },
+        growthSpeed: {
+            base: 1,
+            level: 0,
+            upgradePerLevel: linearGenerator(0.05, 1),
+            floor: false,
+            pricingPerLevel: linearGenerator(1500, 1000)
+        },
     }
     times=calculateActionTimes(times)
     return times

@@ -41,7 +41,8 @@ function loadAllImages() {
 
         settings: loadImage('assets/settings.png'),
         reset: loadImage('assets/reset.png'),
-        sound: loadImage('assets/sound.png'),
+        soundOn: loadImage('assets/soundOn.png'),
+        soundOff: loadImage('assets/soundOff.png'),
 
 
         coinImage: loadImage('assets/coin.png'),
@@ -368,4 +369,24 @@ function openView(viewToOpen){
         
     }
     views[viewToOpen]=true
+}
+
+
+
+
+plantedTrees=0
+grownTrees=0
+
+function handleSound(soundToPlay){
+    if(!soundEnabled)return
+    comeBackSound.play()
+}
+
+
+function soundEnable(){
+    soundEnabled=!soundEnabled
+    if(soundEnabled)settings.settings.sound.image=images.soundOn
+    else settings.settings.sound.image=images.soundOff
+    // handleSound(sound.buttonClicked)
+    handleSound()
 }

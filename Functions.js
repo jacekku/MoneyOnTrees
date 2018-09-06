@@ -125,7 +125,7 @@ function setupActionTimes(){
         plantSpeed:{base:300,level:1,upgradePerLevel:linearGraph,pricingPerLevel:linearGraph},
         harvestSpeed:{base:2000,level:0,maxLevel:100,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGenerator(1000,2000)},
         chopSpeed:{base:2000,level:0,maxLevel:100,upgradePerLevel:onePlateuGraph,pricingPerLevel:linearGenerator(200,100)},
-        treeYield:{base:1,level:0,upgradePerLevel:linearGenerator(1,1),floor:true,pricingPerLevel:exponentialGenerator(1.7,1000,0)},
+        treeYield:{base:1,level:0,upgradePerLevel:linearGenerator(1,1),floor:true,pricingPerLevel:exponentialGenerator(1.7,500,1000)},
         fruitYield:{base:1,level:0,upgradePerLevel:linearGenerator(1,1),floor:true,pricingPerLevel:exponentialGenerator(2.5,10000,10000)},
         sellPrice:{base:1,level:1,upgradePerLevel:linearGraph,pricingPerLevel:linearGenerator(10000,10000)},
         growthSpeed:{base:1,level:0,upgradePerLevel:linearGenerator(0.01,1),floor:false,pricingPerLevel:linearGenerator(2500,2000)},
@@ -280,8 +280,10 @@ document.onvisibilitychange = function () {
     if (document.visibilityState == "hidden") {
         leftPageAt = Date.now()
         saveGame(mainSave)
+        simulateTicks()
     } else {
         catchUpOnTicks(leftPageAt)
+        clearTimeout(soundPlayTimeoutID)
     }
 }
 window.addEventListener("unload", () => {
@@ -371,9 +373,15 @@ function openView(viewToOpen){
     views[viewToOpen]=true
 }
 
+function simulateTicks(){
+    let ticksToGo=orchard.treeSpots.filter(e=>e.tree).map(e=>e.tree.getTicksToFullyGrown())
+    let max=Math.max(...ticksToGo)
+    let min=Math.min(...ticksToGo)
+    if(comeBackType=="all"){if(max>0)soundPlayTimeoutID=setTimeout(handleSound,max*newTickEveryMS)}
+    else soundPlayTimeoutID=setTimeout(handleSound,min*newTickEveryMS)
+}
 
-
-
+comeBackType="all"
 plantedTrees=0
 grownTrees=0
 

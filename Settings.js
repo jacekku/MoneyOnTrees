@@ -7,8 +7,8 @@ class Settings {
                 button:{}
             },
             sound: {
-                onClick: null,
-                image: images.sound,
+                onClick: soundEnable,
+                image: images.soundOn,
                 button:{}
             }
         }

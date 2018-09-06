@@ -42,6 +42,10 @@ class Tree {
         this.harvested = state.harvested
         
     }
+    getTicksToFullyGrown(){
+        if(this.growthStage==this.maxGrowthStage)return 0
+        return (this.growthThreshold-this.growthCounter)+(this.maxGrowthStage-this.growthStage-1)*this.growthThreshold
+    }
 
     canChop() {
         return this.maxGrowthStage === this.growthStage && (this.harvestItem?this.harvested:true)

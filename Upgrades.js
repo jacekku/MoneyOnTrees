@@ -73,7 +73,7 @@ class Upgrades{
     }
 
     show(){
-        drawView(this.x, this.y, this.width, this.height,"UPGRADES (work in progress)")
+        drawView(this.x, this.y, this.width, this.height,"UPGRADES $"+items.money.amount)
         this.drawUpgrades()
     }
     isClicked() {

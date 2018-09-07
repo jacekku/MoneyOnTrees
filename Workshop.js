@@ -98,7 +98,7 @@ class Workshop{
         strokeWeight(0.5)
         fill(0)
         for(let button of item.buttons){button.show([255,245,144])}
-        text("craft "+item.products[0][1],  topRight.x,topRight.y+topRight.height/8,topRight.width,topRight.height)
+        text("craft "+item.products[0][1],  topRight.x,topRight.y+topRight.height/7,topRight.width,topRight.height)
         text("craft all",                   topRight.x,topRight.y+topRight.height/2+textSize(),topRight.width,topRight.height)
         imageMode(CORNER)
         textAlign(LEFT)

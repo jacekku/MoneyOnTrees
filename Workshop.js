@@ -41,17 +41,26 @@ class Workshop{
         this.setButtons()
     }
     setButtons(){
+        
         let itemIndex=0
         let spotSize = STYLE.itemInShopSize
         let y = this.y+(STYLE.margin)+textSize()
         let x = this.x+(STYLE.margin)
         for(let i=1;i<=12;i++){
+            let card=new Card(x,y,spotSize,spotSize)
                 if(itemIndex!=-1){
-                    this.items[this.itemNames[itemIndex]].buttons.push(new Button(x,y,spotSize,spotSize))
+                    let subSpace=card.subSpaces.topRight
+                    let craftOne=new Button(subSpace.x,subSpace.y,subSpace.width,subSpace.height/2)
+                    craftOne.setName("craftOne")
+                    let craftAll=new Button(subSpace.x,subSpace.y+subSpace.height/2,subSpace.width,subSpace.height/2)
+                    craftAll.setName("craftAll")
+
+                    this.items[this.itemNames[itemIndex]].buttons.push(craftOne)
+                    this.items[this.itemNames[itemIndex]].buttons.push(craftAll)
                 }
 
                 
-                x+=spotSize+STYLE.margin
+                x+=spotSize+STYLE.margin*5
                 if(i%4==0){
                     x=this.x+(STYLE.margin)
                     y+=spotSize+STYLE.margin
@@ -60,10 +69,6 @@ class Workshop{
                     itemIndex++
                 }else{itemIndex=-1}
             }
-
-
-        // this.items["Oak Planks"].buttons.push(new Button(startingX,startingY,spotSize,spotSize))
-        // this.items["Pine Planks"].buttons.push(new Button(startingX + spotSize+STYLE.margin,startingY,spotSize,spotSize))
     }
 
 
@@ -71,29 +76,32 @@ class Workshop{
 
     show(){
         drawView(this.x,this.y,this.w,this.h,"WORKSHOP")
-        let spotSize = STYLE.itemInShopSize
-        let startingX=this.x+(STYLE.margin)
-        let startingY=this.y+(STYLE.margin)+textSize()
-
         this.showAllItems()
-        // this.showItem(startingX,startingY,spotSize,this.items["Oak Planks"])
-        // this.showItem(startingX + spotSize+STYLE.margin,startingY,spotSize,this.items["Pine Planks"])
     }
     showItem(x,y,size,item){
         if(typeof item == "string"){
             item=this.items[item]
         }
+        let card=new Card(x,y,size,size)
+        let subSpaces=card.subSpaces
         fill(255,245,144)
         rect(x,y,size,size)
-        image(item.products[0][0].image,x,y,size/2,size/2)
-        
+        let topLeft=subSpaces.topLeft
+        image(item.products[0][0].image,topLeft.x,topLeft.y,topLeft.width,topLeft.height)
         fill(0)
         push()
-        textAlign(LEFT,TOP)
+        textAlign(CENTER,TOP)
         textSize(textSize()/2)
-        text(item.products[0][0].amount+" +"+item.products[0][1],x+size/2,y,size/2,size/2)
+        
+        let topRight=subSpaces.topRight
+        stroke(0)
+        strokeWeight(0.5)
+        fill(0)
+        for(let button of item.buttons){button.show([255,245,144])}
+        text("craft "+item.products[0][1],  topRight.x,topRight.y+topRight.height/8,topRight.width,topRight.height)
+        text("craft all",                   topRight.x,topRight.y+topRight.height/2+textSize(),topRight.width,topRight.height)
         imageMode(CORNER)
-
+        textAlign(LEFT)
         for(let res of item.resources){
             fill(0)
             image(res[0].image,x,y+size-size/4,size/4,size/4)
@@ -110,7 +118,6 @@ class Workshop{
         let x = this.x+(STYLE.margin)
         for(let i=1;i<=12;i++){
                 if(itemIndex!=-1){this.showItem(x, y, spotSize, this.itemNames[itemIndex])}
-
 
                 x+=spotSize+STYLE.margin*5
                 if(i%4==0){
@@ -141,12 +148,19 @@ class Workshop{
             for (let prod of item.products) {
                 prod[0].addAmount(prod[1])
             }
+            return true
+    }
+    craftItemMax(item){
+        while(this.craftItem(item)){}
     }
     isClicked(){
         for(let item in this.items){
             for(let button of this.items[item].buttons){
-                if(button.isClicked()){
+                if(button.isClicked()&& button.name=="craftOne"){
                     this.craftItem(this.items[item])
+                }
+                if(button.isClicked()&& button.name=="craftAll"){
+                    this.craftItemMax(this.items[item])
                 }
             }
         }

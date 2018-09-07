@@ -14,11 +14,13 @@ class Button{
         this.image=image
     }
     show(newFill=255){
+        push()
         fill(newFill)
         rect(this.x,this.y,this.w,this.h)
         if(this.image){
             imageMode(CORNER)
             image(this.image,this.x,this.y,this.w,this.h)}
+        pop()
         return {x:this.x,y:this.y}
     }
     mouseIsInside(){
@@ -30,6 +32,12 @@ class Button{
         if(output)
             if(this.onClick)this.onClick()
         return output
+    }
+    setName(name){
+        this.name=name
+    }
+    getName(){
+        return this.name
     }
 
 }

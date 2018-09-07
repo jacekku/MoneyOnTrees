@@ -108,7 +108,7 @@ function setupButtons() {
     buttons.settingsButton.setOnClick(function () {
         openView("settings");
     });
-    winButtons.resetButton = new Button(width/2-400, textSize()*4, 100, 100, hardResetGame)
+    winButtons.resetButton = new Button(width/2-400, textSize()*4, 100, 100,()=> hardResetGame(1))
     winButtons.resetButton.setImage(images.reset)
     winButtons.continuePlayButton = new Button(width/2+300, textSize()*4, 100, 100, () => {
         continuePlay = true;
@@ -153,7 +153,7 @@ function setupActionTimes(){
             level: 0,
             maxLevel: 100,
             upgradePerLevel: onePlateuGraph,
-            pricingPerLevel: linearGenerator(200, 100)
+            pricingPerLevel: linearGenerator(100, 100)
         },
         treeYield: {
             base: 1,
@@ -219,6 +219,7 @@ function buyUpgrade(action){
     if(typeof action=="string"){
         action=actionTimes[action]
     }
+    if(action.level==action.maxLevel)return false
     if(items.money.subtractAmount(Math.round(action.pricingPerLevel(action.level)))){
         setActionLevel(action)
         return true
@@ -397,15 +398,22 @@ function loadGame(saveName) {
     // saveGame(saveName)
 }
 
-function hardResetGame() {// refactor this, maybe add a function that remakes all the variables
+function hardResetGame(timesToReset=0) {// refactor this, maybe add a function that remakes all the variables
+    console.log("RESTART")
     localStorage.clear()
-    preload()
     tickCounter=0
     gameStartedAt=Date.now()
+    gameWonAt=0
+    preload()
     saveGame("mainSave")
     loadGame("mainSave")
+    setupButtons()
     orchard=new Orchard()
     inventory=new Inventory(...items.iterator)
+    mouseObject.setAction(Actions.NOTHING)
+
+    openView("orchard")
+    if(timesToReset>0)hardResetGame(timesToReset-1)
 }
 function exportSave(saveName="mainSave"){
     saveStrings([localStorage[saveName]],saveName+".txt")

@@ -9,7 +9,6 @@ let debugMode = false
 
 soundEnabled = true
 gameWonAt = 0
-continuePlay = false
 
 
 let actionTimes
@@ -17,7 +16,9 @@ let actionTimes
 let Actions
 
 function preload() {
+    console.log("PRELOAD")
     comeBackSound = loadSound("assets/sounds/comeBack.wav")
+    continuePlay = false
     loadAllImages()
     actionTimes = setupActionTimes()
     Actions = setupActions()

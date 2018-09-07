@@ -23,8 +23,14 @@ function preload() {
     actionTimes = setupActionTimes()
     Actions = setupActions()
     items = setupItems()
+    setupViews()
 }
-
+function setupViews(){
+    shop = new Shop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
+    workshop = new Workshop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
+    upgrades = new Upgrades(10, 10, width - 20, height - 30 - STYLE.buttonSize)
+    settings = new Settings()
+}
 
 
 function setup() {
@@ -44,10 +50,7 @@ function setup() {
 
     STYLE.inventory.width = width - 620 - 10
     if (!orchard) orchard = new Orchard()
-    shop = new Shop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
-    workshop = new Workshop(10, 10, width - 20, height - 30 - STYLE.buttonSize)
-    upgrades = new Upgrades(10, 10, width - 20, height - 30 - STYLE.buttonSize)
-    settings = new Settings()
+    setupViews()
 
 
     setupButtons();
@@ -87,6 +90,7 @@ function draw() {
         text("Please Share your time in the comments :)", width / 2, textSize()*2)
         let timeDiff = gameWonAt - gameStartedAt
         text(`It took you ${timeParser(timeDiff)}, nice!`, width / 2, textSize() * 3)
+        text(`RESET                                                CONTINUE PLAYING`, width / 2, textSize() * 5)
         for (const button in winButtons) {
             winButtons[button].show()
         }

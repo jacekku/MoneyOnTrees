@@ -61,6 +61,7 @@ function loadAllImages() {
         sellButtonImage: loadImage('assets/sellButton.png'),
         harvestImage: loadImage('assets/harvest.png'),
         chopDownImage: loadImage('assets/chop.png'),
+        trophy: loadImage('assets/trophy.png'),
     }
 }
 
@@ -108,13 +109,13 @@ function setupButtons() {
     buttons.settingsButton.setOnClick(function () {
         openView("settings");
     });
-    winButtons.resetButton = new Button(width/2-400, textSize()*4, 100, 100,()=> hardResetGame(1))
+    winButtons.resetButton = new Button(width/2-400, textSize()*6, 100, 100,()=> hardResetGame(1))
     winButtons.resetButton.setImage(images.reset)
-    winButtons.continuePlayButton = new Button(width/2+300, textSize()*4, 100, 100, () => {
+    winButtons.continuePlayButton = new Button(width/2+200, textSize()*6, 100, 100, () => {
         continuePlay = true;
         openView("orchard")
         buttons.win = new Button(STYLE.buttonX + STYLE.margin * 9 + STYLE.buttonSize * 9, STYLE.buttonY);
-        buttons.win.setImage(images.settings);
+        buttons.win.setImage(images.trophy);
         buttons.win.setOnClick(function () {openView("win");}); 
     })
     winButtons.continuePlayButton.setImage(images.harvestImage)
@@ -160,7 +161,7 @@ function setupActionTimes(){
             level: 0,
             upgradePerLevel: linearGenerator(1, 1),
             floor: true,
-            pricingPerLevel: exponentialGenerator(1.7, -500, 1000)
+            pricingPerLevel: exponentialGenerator(1.7, -750, 1000)
         },
         fruitYield: {
             base: 1,
@@ -404,6 +405,7 @@ function hardResetGame(timesToReset=0) {// refactor this, maybe add a function t
     tickCounter=0
     gameStartedAt=Date.now()
     gameWonAt=0
+    continuePlay=false
     preload()
     saveGame("mainSave")
     loadGame("mainSave")
@@ -411,6 +413,7 @@ function hardResetGame(timesToReset=0) {// refactor this, maybe add a function t
     orchard=new Orchard()
     inventory=new Inventory(...items.iterator)
     mouseObject.setAction(Actions.NOTHING)
+    buttons.win=new Button(0,0,1,1)
 
     openView("orchard")
     if(timesToReset>0)hardResetGame(timesToReset-1)

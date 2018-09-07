@@ -52,17 +52,27 @@ class Item {
             case "buy":
                 this.buyButton = button
                 break
+            case "buyAll":
+                this.buyAllButton = button
+                break
             default:
                 break;
         }
     }
     buyItem(amount=1){
-        if(this.buyPrice==0)return
+        if(this.buyPrice==0)return false
         let item=inventory.getItemByName(this.name)||console.error("not in inventory FIXIT !!!")
-        if(!item)return
+        if(!item)return false
         // TODO change this so the item object doesnt need to know about other items
-        if(items.money.subtractAmount(this.buyPrice*amount))
-        item.addAmount(amount)
+        if (items.money.subtractAmount(this.buyPrice * amount)) {
+            item.addAmount(amount)
+            return true
+        }
+        return false
+    }
+    buyItemAll(){
+        console.log("BUY ALL")
+        while(this.buyItem()){}
     }
     sellItem(amount=1){
         let item=inventory.getItemByName(this.name)||console.error("not in inventory FIXIT !!!")
@@ -86,24 +96,34 @@ class Item {
         else if(buttonID==3){
             this.sellItem(this.amount)
         }
+        else if(buttonID==4){
+            this.buyItemAll()
+        }
     }
     isClicked() {
-        
         if (this.button && this.button.isClicked()) {
             this.onClick(0)
             return true
         }
-
+       
         if (this.buyButton && this.buyButton.isClicked()) {
             this.onClick(1)
-
+            return true
         }
         if (this.sellButton && this.sellButton.isClicked()) {
             this.onClick(2)
+            return true
         }
         if (this.sellAllButton && this.sellAllButton.isClicked()) {
             this.onClick(3)
+            return true
         }
+        if(this.buyAllButton && this.buyAllButton.isClicked()){
+            this.onClick(4)
+            return true
+        }
+
+        
          else return false
     }
 
@@ -150,6 +170,14 @@ class Item {
         textAlign(LEFT,TOP)
         text("SELL ALL",pos.x,pos.y)
         pop()
+
+
+        pos=this.buyAllButton.show(color(255,0,0))
+        fill(0)
+        push()
+        textAlign(LEFT,TOP)
+        text("BUY ALL",pos.x,pos.y)
+        pop()
         
         text(this.name, x + spotSize / 2, y + itemSize + textSize() / 2)
 
@@ -159,12 +187,14 @@ class Item {
         let spotSize = STYLE.itemInShopSize
         let middleX = (spotSize / 2)
 
-        this.setButton(new Button(x, y + itemSize, spotSize / 2, spotSize - itemSize), "buy")
+        this.setButton(new Button(x, y + itemSize, spotSize / 2, spotSize - itemSize-textSize()), "buy")
         if(this.buyPrice==0)this.buyButton.setImage(images.notBuyButtonImage)
         else this.buyButton.setImage(images.buyButtonImage)
         this.setButton(new Button(x + middleX, y + itemSize, spotSize / 2, spotSize - itemSize-textSize()), "sell")
         this.sellButton.setImage(images.sellButtonImage)
         this.setButton(new Button(x + middleX, y + itemSize +spotSize - itemSize-textSize(), spotSize / 2, textSize()), "sellAll")
         this.sellAllButton.setImage(images.sellButtonImage)
+        this.setButton(new Button(x, y + itemSize +spotSize - itemSize-textSize(), spotSize / 2, textSize()), "buyAll")
+        this.buyAllButton.setImage(images.buyButtonImage)
     }
 }
